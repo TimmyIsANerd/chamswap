@@ -50,7 +50,7 @@ const ReferralCode = styled.div`
 
 const Button = styled.button`
   background: ${({ theme }) => theme.primary1};
-  color: white;
+  color: #9c19c5e8;
   border: none;
   border-radius: 12px;
   padding: 12px 24px;

@@ -18,6 +18,7 @@ import { RedirectPathToSwapOnly, RedirectToPath } from 'legacy/pages/Swap/redire
 
 import { Routes as RoutesEnum, RoutesValues } from 'common/constants/routes'
 import Account, { AccountOverview } from 'pages/Account'
+import { AdminPage } from 'pages/Admin'
 import AdvancedOrdersPage from 'pages/AdvancedOrders'
 // import { BridgePage } from 'pages/Bridge'
 import { BuyPage } from 'pages/Buy'
@@ -62,6 +63,7 @@ const lazyRoutes: LazyRouteProps[] = [
   { route: RoutesEnum.LONG_LIMIT_ORDER, element: <RedirectToPath path={'/limit'} /> },
   { route: RoutesEnum.ADVANCED_ORDERS, element: <AdvancedOrdersPage /> },
   // { route: RoutesEnum.BRIDGE, element: <BridgePage />},
+  { route: RoutesEnum.ADMIN, element: <AdminPage />},
   { route: RoutesEnum.BUY, element: <BuyPage /> },
   { route: RoutesEnum.REWARD, element: <RewardPage /> },
   { route: RoutesEnum.HOME, element: <LandingPage /> },
@@ -94,6 +96,7 @@ export function RoutesApp() {
         <Route path="profile" element={<Navigate to={RoutesEnum.ACCOUNT} />} />
 
         {/*Swap*/}
+        <Route path={RoutesEnum.ADMIN} element={<AdminPage />} />
         <Route path={RoutesEnum.BUY} element={<BuyPage />} />
         <Route path={RoutesEnum.REWARD} element={<RewardPage />} />
         <Route path={RoutesEnum.SWAP} element={<SwapPage />} />   

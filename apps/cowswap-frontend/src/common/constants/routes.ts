@@ -9,6 +9,7 @@ export const Routes = {
   REWARD: `/rewardpage`,
   BUY:`/buypage`,
   // BRIDGE: `/bridgepage`,
+  ADMIN: `adminpage`,
   SWAPS: `/swap`,
   LIMIT: `/limit`,
   ADVANCED: `/advanced`,
