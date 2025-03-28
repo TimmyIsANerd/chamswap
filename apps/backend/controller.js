@@ -51,9 +51,11 @@ const controller = {
   async getUser(req, res) {
     try {
       const id = req.params.id;
-      const user = await User.findById(id).populate("referrals");
-      res.status(200).json(user);
+      const user = await User.findOne({wallet_address:id});
+      const total_refferal=await User.countDocuments({reffer_by:user.reffer_code})
+      res.status(200).json({data:{...user._doc,total_refferal},message:"success",status:true});
     } catch (error) {
+      console.log(error.message)
       res.status(500).json({ message: "Error in getting user", status: false });
     }
   },

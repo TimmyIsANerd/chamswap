@@ -20,20 +20,32 @@ const schema = new db.Schema(
       type: String,
       trim: true,
     },
+    phone: {
+      type: String,
+      trim: true,
+    },
     role: {
       type: String,
       trim: true,
-      enum:['admin', 'user', 'super admin']
+      enum:['admin', 'user', 'super admin'],
+      default:"user"
     },
     reffer_code: {
       type: String,
-      // required: true,
       trim: true,
+    },
+    point: {
+      type: Number,
+      default:0
     },
     reffer_by: {
       type: String,
       trim: true,
       ref: "User",
+    },
+    active: {
+      type:Boolean,
+      default:true
     },
   },
   {

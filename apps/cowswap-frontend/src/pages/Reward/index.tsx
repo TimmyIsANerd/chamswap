@@ -132,15 +132,30 @@ export function RewardPage() {
   const [points, setPoints] = useState(0)
   const [referrals, setReferrals] = useState(0)
   const [volume, setVolume] = useState(0)
+  const getData=async()=>{
+    try{
+      const {data:{data}={}}=await http.get(`/${account}`)
+      if(data){
+        // console.log(data)
+        setPoints(data.point)
+        setReferrals(data.total_refferal)
+        setReferralCode(data.reffer_code)
+        setVolume(0)
+      }
+    }catch(error){
+      console.log(error.message)
+    }
+  }
 
   useEffect(() => {
     if (account) {
       // TODO: Fetch user's referral code if exists
       // TODO: Fetch user's points and statistics from API
       // Mock data for now
-      setPoints(1500)
-      setReferrals(3)
-      setVolume(25000)
+      getData()
+      // setPoints(1500)
+      // setReferrals(3)
+      // setVolume(25000)
     }
   }, [account])
 
