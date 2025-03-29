@@ -45,7 +45,6 @@ export function Web3Status({ pendingActivities, className, onClick }: Web3Status
 
   return (
     <Wrapper className={className} onClick={onClick}>
-      hello
       <Web3StatusInner
         pendingCount={pendingActivities.length}
         account={account}

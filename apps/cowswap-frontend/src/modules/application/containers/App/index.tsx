@@ -106,10 +106,10 @@ export function App() {
         label: 'Buy',
         href: Routes.BUY,
       },
-      {
-        label: 'Admin',
-        href: Routes.ADMIN,
-      },
+      // {
+      //   label: 'Admin',
+      //   href: Routes.ADMIN,
+      // },
       // {
       //   label: 'Bridge',
       //   href: Routes.BRIDGE,
