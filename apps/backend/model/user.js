@@ -1,12 +1,15 @@
+import bcrypt from 'bcryptjs';
+
 import db from "../config/db.js";
+
 
 const schema = new db.Schema(
   {
     wallet_address: {
       type: String,
-      required: true,
       trim: true,
       unique: true,
+      sparse: true
     },
     name: {
       type: String,
@@ -19,6 +22,10 @@ const schema = new db.Schema(
     email: {
       type: String,
       trim: true,
+      unique: true,
+      required: function() {
+        return this.role === 'admin' || this.role === 'super_admin';
+      }
     },
     phone: {
       type: String,
@@ -27,8 +34,22 @@ const schema = new db.Schema(
     role: {
       type: String,
       trim: true,
-      enum:['admin', 'user', 'super admin'],
-      default:"user"
+      enum: ['super_admin', 'admin', 'user'],
+      default: "user"
+    },
+    passwordResetToken: {
+      type: String,
+      trim: true
+    },
+    passwordResetExpires: {
+      type: Date
+    },
+    emailVerified: {
+      type: Boolean,
+      default: false
+    },
+    lastLogin: {
+      type: Date
     },
     reffer_code: {
       type: String,
@@ -36,7 +57,7 @@ const schema = new db.Schema(
     },
     point: {
       type: Number,
-      default:0
+      default: 0
     },
     reffer_by: {
       type: String,
@@ -44,8 +65,8 @@ const schema = new db.Schema(
       ref: "User",
     },
     active: {
-      type:Boolean,
-      default:true
+      type: Boolean,
+      default: true
     },
   },
   {
@@ -55,6 +76,25 @@ const schema = new db.Schema(
     toObject: { virtuals: true },
   }
 );
+
+// Password hashing middleware
+schema.pre('save', async function(next) {
+  if (!this.isModified('password')) return next();
+  
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Method to check password
+schema.methods.comparePassword = async function(candidatePassword) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
+
 schema.virtual("referrals", {
   ref: "User",
   localField: "reffer_code",
@@ -63,7 +103,6 @@ schema.virtual("referrals", {
     sort: { order: 1 },
     lean: true,
   },
-
 });
 
 const User = db.model("User", schema);

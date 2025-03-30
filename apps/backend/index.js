@@ -4,7 +4,7 @@ import "dotenv/config";
 import db from "./config/db.js";
 import helmet from "helmet";
 import compression from "compression";
-import route from "./route.js";
+import routes from "./routes/index.js";
 import http from "http";
 process.env.TZ = "Etc/UTC";
 
@@ -31,28 +31,46 @@ app.use(
   })
 );
 
-app.use('/api/user',route);
-app.get("/",(req,res)=>{
-  res.status(200).json({
-    message:"Welcome to backend",
-    status:true
-  })
-})
+// API Routes
+app.use('/api', routes);
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Welcome to backend",
+    status: true
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
 const start = async () => {
   try {
     await db.connection.asPromise();
-    console.log("Connect to the database successfully");
+    console.log("Connected to the database successfully");
+
+    // Create super admin if it doesn't exist
+    const User = db.model('User');
+    const superAdmin = await User.findOne({ role: 'super_admin' });
+    if (!superAdmin) {
+      await User.create({
+        email: process.env.SUPER_ADMIN_EMAIL || 'admin@example.com',
+        password: process.env.SUPER_ADMIN_PASSWORD || 'changeme123',
+        role: 'super_admin',
+        name: 'Super Admin',
+        emailVerified: true
+      });
+      console.log('Super admin account created');
+    }
+
     server.listen(PORT, () => {
       console.log(`Server is running at http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.log("Failed to connect to the database");
+    console.error("Failed to connect to the database:", error);
+    process.exit(1);
   }
 };
+
 start();
 
 const graceful = () => {
