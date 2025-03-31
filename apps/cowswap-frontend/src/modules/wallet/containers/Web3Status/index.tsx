@@ -28,7 +28,7 @@ export function Web3Status({ pendingActivities, className, onClick }: Web3Status
   const connectWallet=async()=>{
     try {
       if(account !==undefined){
-        const res= await http.post("/connect_wallet",{wallet_address:account,reffer_by:refCode})
+        const res= await http.post("/connect_wallet",{wallet_address:account,reffer_by:refCode},{intercept:false})
         console.log("connect successful")
       }
     } catch (error) {

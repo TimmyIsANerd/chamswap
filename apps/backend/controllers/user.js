@@ -1,4 +1,4 @@
-import User from "./model/user.js";
+import User from "../model/user.js";
 
 function generateReferralCode(length = 6) {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Uppercase letters & numbers
@@ -8,10 +8,7 @@ function generateReferralCode(length = 6) {
   }
   return result;
 };
-// (async()=>{
-//   await User.deleteMany();
-//   console.log("delete many")
-// })()
+
 const controller = {
   async connect_wallet(req, res) {
     try {

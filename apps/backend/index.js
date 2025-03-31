@@ -7,6 +7,7 @@ import compression from "compression";
 import routes from "./routes/index.js";
 import http from "http";
 process.env.TZ = "Etc/UTC";
+import userroutes from "./routes/user.js"
 
 if (!process.env.PORT) {
   throw new Error("PORT environment variable is not defined");
@@ -14,10 +15,14 @@ if (!process.env.PORT) {
 
 const app = express();
 
+app.use(cors({
+  origin: "*",
+  allowedHeaders: ["Authorization", "Content-Type"],
+  methods: ["GET", "POST", "PUT", "DELETE"]
+}));
+// app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-app.use(helmet());
 const server = http.createServer(app);
 
 app.use(
@@ -30,8 +35,8 @@ app.use(
     },
   })
 );
-
 // API Routes
+app.use("/api/user",userroutes)
 app.use('/api', routes);
 
 app.get("/", (req, res) => {
@@ -53,8 +58,8 @@ const start = async () => {
     const superAdmin = await User.findOne({ role: 'super_admin' });
     if (!superAdmin) {
       await User.create({
-        email: process.env.SUPER_ADMIN_EMAIL || 'admin@example.com',
-        password: process.env.SUPER_ADMIN_PASSWORD || 'changeme123',
+        email: process.env.SUPER_ADMIN_EMAIL ?? 'admin@example.com',
+        password: process.env.SUPER_ADMIN_PASSWORD ??'changeme123',
         role: 'super_admin',
         name: 'Super Admin',
         emailVerified: true
