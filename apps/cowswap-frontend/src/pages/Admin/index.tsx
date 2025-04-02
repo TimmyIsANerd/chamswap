@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import styled from 'styled-components/macro'
 
+import { UI } from '@cowprotocol/ui'
 import {
   Box,
   Container,
@@ -23,6 +25,7 @@ import {
   Skeleton,
   CircularProgress,
 } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
 
 import http from 'utils/http'
 interface TabPanelProps {
@@ -70,6 +73,51 @@ interface WalletData {
   address: string
   totalTradedUSD: number
 }
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: 'var(--cow-color-primary)',
+    },
+    secondary: {
+      main: 'var(--cow-color-text)',
+    },
+    background: {
+      default: 'var(--cow-color-paper)',
+      paper: 'var(--cow-color-paper)',
+    },
+    text: {
+      primary: 'var(--cow-color-text)',
+      secondary: 'var(--cow-color-text-paper)',
+    },
+  },
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'var(--cow-color-paper)',
+          color: 'var(--cow-color-text)',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: 'var(--cow-color-text)',
+          borderColor: 'var(--cow-color-text)',
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          color: 'var(--cow-color-text)',
+          borderColor: 'var(--cow-color-border)',
+        },
+      },
+    },
+  },
+})
 
 function AdminPage({ user }: any) {
   const token = localStorage.getItem('token')
@@ -182,7 +230,8 @@ function AdminPage({ user }: any) {
   }
 
   return (
-    <Container maxWidth="lg">
+    <ThemeProvider theme={theme}>
+      <Container maxWidth="lg" sx={{ backgroundColor: 'var(--cow-color-paper)' }}>
       <Box sx={{ width: '100%', mt: 4 }}>
         {notificationMessage && (
           <Alert severity={isError ? 'error' : 'success'} sx={{ mb: 2 }} onClose={() => setNotificationMessage('')}>
@@ -341,8 +390,15 @@ function AdminPage({ user }: any) {
         </Dialog>
       </Box>
     </Container>
+    </ThemeProvider>
   )
 }
+
+const Wrapper = styled.div`
+  min-height: 100vh;
+  background-color: var(${UI.COLOR_PAPER});
+  color: var(${UI.COLOR_TEXT});
+`
 
 const AdminLayout = () => {
   const token = localStorage.getItem('token')
@@ -374,11 +430,11 @@ const AdminLayout = () => {
     setIsLoggedIn('auth')
   }
   return (
-    <>
+    <Wrapper>
       {isLoggedIn === 'loading' && <Loading />}
       {isLoggedIn === 'auth' && <AdminPage user={user} />}
       {isLoggedIn === 'login' && <Login setLogin={handleChange} />}
-    </>
+    </Wrapper>
   )
 }
 

@@ -28,8 +28,22 @@ export function Web3Status({ pendingActivities, className, onClick }: Web3Status
   const connectWallet=async()=>{
     try {
       if(account !==undefined){
-        const res= await http.post("/connect_wallet",{wallet_address:account,reffer_by:refCode},{intercept:false})
-        console.log("connect successful")
+        try {
+          const response = await http.post("/connect_wallet", {
+            wallet_address: account,
+            reffer_by: refCode
+          }, {
+            intercept: false
+          });
+          
+          if (response?.status === 200) {
+            console.log("Wallet connected successfully");
+          } else {
+            console.warn("Unexpected response from connect_wallet endpoint");
+          }
+        } catch (err) {
+          console.error("Failed to connect wallet:", err);
+        }
       }
     } catch (error) {
       console.log(error)
