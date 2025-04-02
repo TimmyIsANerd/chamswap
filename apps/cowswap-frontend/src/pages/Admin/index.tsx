@@ -20,8 +20,11 @@ import {
   DialogContent,
   DialogActions,
   Alert,
+  Skeleton,
+  CircularProgress,
 } from '@mui/material'
 
+import http from 'utils/http'
 interface TabPanelProps {
   children?: React.ReactNode
   index: number
@@ -39,11 +42,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`admin-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   )
 }
@@ -51,7 +50,7 @@ function TabPanel(props: TabPanelProps) {
 interface Admin {
   id: string
   email: string
-  isSuperAdmin: boolean
+  role?:string
 }
 
 interface ProjectSettings {
@@ -72,7 +71,8 @@ interface WalletData {
   totalTradedUSD: number
 }
 
-export function AdminPage() {
+function AdminPage({ user }: any) {
+  const token = localStorage.getItem('token')
   const [tabValue, setTabValue] = useState(0)
   const [admins, setAdmins] = useState<Admin[]>([])
   const [settings, setSettings] = useState<ProjectSettings>({ feeAddress: '', feePercentage: 0 })
@@ -84,46 +84,57 @@ export function AdminPage() {
   const [isError, setIsError] = useState(false)
 
   // Fetch data from backend
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // TODO: Replace with actual API calls
-        // Fetch admins
-        setAdmins([
-          { id: '1', email: 'super@admin.com', isSuperAdmin: true },
-          { id: '2', email: 'admin@example.com', isSuperAdmin: false },
-        ])
-
-        // Fetch settings
-        setSettings({
-          feeAddress: '0x1234...5678',
-          feePercentage: 0.1,
-        })
-
-        // Fetch transactions
-        setTransactions([
-          {
-            txHash: '0x123...',
-            walletAddress: '0xabc...',
-            transactionTime: '2023-01-01 12:00:00',
-            tokenAmount: '100 ETH',
-            usdAmount: 180000,
-          },
-        ])
-
-        // Fetch wallet data
-        setWallets([
-          {
-            address: '0xabc...',
-            totalTradedUSD: 180000,
-          },
-        ])
-      } catch (error) {
-        setNotificationMessage('Failed to fetch data')
-        setIsError(true)
+  const getAdmin = async () => {
+    try {
+      const { data: { data } = {} } = await http.get('/auth/users?type=admin')
+      setAdmins(data)
+    }catch(error){  
+      setNotificationMessage('Failed to fetch data')
+      setIsError(true)
+    }
+  }
+  const getSetting = async () => {
+    try {
+      const { data: { data } = {} } = await http.get('/settings')
+      if(data){
+        setSettings(data)
       }
     }
+    catch (error) {
+      setNotificationMessage('Failed to fetch data')
+      setIsError(true)
+    }
 
+  }
+  const fetchData = async () => {
+    try {
+      getAdmin();
+      getSetting();
+      // Fetch transactions
+      setTransactions([
+        {
+          txHash: '0x123...',
+          walletAddress: '0xabc...',
+          transactionTime: '2023-01-01 12:00:00',
+          tokenAmount: '100 ETH',
+          usdAmount: 180000,
+        },
+      ])
+
+      // Fetch wallet data
+      setWallets([
+        {
+          address: '0xabc...',
+          totalTradedUSD: 180000,
+        },
+      ])
+    } catch (error) {
+      setNotificationMessage('Failed to fetch data')
+      setIsError(true)
+    }
+  }
+  useEffect(() => {
+  
     fetchData()
   }, [])
 
@@ -135,6 +146,9 @@ export function AdminPage() {
     try {
       // TODO: Implement API call to create admin
       // This should trigger email notification for password setup
+
+      const user=await http.post('/auth/admin',{email:newAdminEmail})
+      await fetchData();
       setNotificationMessage('Admin invitation sent successfully')
       setIsError(false)
       setIsAddAdminOpen(false)
@@ -171,19 +185,15 @@ export function AdminPage() {
     <Container maxWidth="lg">
       <Box sx={{ width: '100%', mt: 4 }}>
         {notificationMessage && (
-          <Alert 
-            severity={isError ? 'error' : 'success'} 
-            sx={{ mb: 2 }}
-            onClose={() => setNotificationMessage('')}
-          >
+          <Alert severity={isError ? 'error' : 'success'} sx={{ mb: 2 }} onClose={() => setNotificationMessage('')}>
             {notificationMessage}
           </Alert>
         )}
 
         <Typography variant="h4" component="h1" gutterBottom>
-          Admin Dashboard
-        </Typography>
-        
+          <span style={{ textTransform: 'capitalize' }}>{user.role.split('_').join(' ')} Dashboard</span>
+        </Typography> 
+
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={tabValue} onChange={handleTabChange}>
             <Tab label="User Management" />
@@ -195,14 +205,11 @@ export function AdminPage() {
         {/* User Management Tab */}
         <TabPanel value={tabValue} index={0}>
           <Box sx={{ mb: 2 }}>
-            <Button
-              variant="contained"
-              onClick={() => setIsAddAdminOpen(true)}
-            >
+            <Button variant="contained" onClick={() => setIsAddAdminOpen(true)}>
               Add Admin
             </Button>
           </Box>
-          
+
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -215,15 +222,11 @@ export function AdminPage() {
               <TableBody>
                 {admins.map((admin) => (
                   <TableRow key={admin.id}>
-                    <TableCell>{admin.email}</TableCell>
-                    <TableCell>{admin.isSuperAdmin ? 'Super Admin' : 'Admin'}</TableCell>
+                    <TableCell>{admin.email??"user"}</TableCell>
+                    <TableCell>{admin?.role==='super_admin' ? 'Super Admin' : admin?.role==="admin" ?'Admin':"User"}</TableCell>
                     <TableCell>
-                      {!admin.isSuperAdmin && (
-                        <Button
-                          variant="outlined"
-                          color="error"
-                          onClick={() => handleRemoveAdmin(admin.id)}
-                        >
+                      {admin.role==="admin" && (
+                        <Button variant="outlined" color="error" onClick={() => handleRemoveAdmin(admin.id)}>
                           Remove
                         </Button>
                       )}
@@ -252,10 +255,7 @@ export function AdminPage() {
               inputProps={{ step: '0.01' }}
               fullWidth
             />
-            <Button
-              variant="contained"
-              onClick={handleUpdateSettings}
-            >
+            <Button variant="contained" onClick={handleUpdateSettings}>
               Update Settings
             </Button>
           </Box>
@@ -317,9 +317,10 @@ export function AdminPage() {
         </TabPanel>
 
         {/* Add Admin Dialog */}
-        <Dialog open={isAddAdminOpen} onClose={() => setIsAddAdminOpen(false)}>
+        <Dialog open={isAddAdminOpen} fullWidth  onClose={() => setIsAddAdminOpen(false)}>
           <DialogTitle>Add New Admin</DialogTitle>
           <DialogContent>
+            <div>
             <TextField
               autoFocus
               margin="dense"
@@ -329,13 +330,135 @@ export function AdminPage() {
               value={newAdminEmail}
               onChange={(e) => setNewAdminEmail(e.target.value)}
             />
-          </DialogContent>
+            </div>
+          </DialogContent> 
           <DialogActions>
             <Button onClick={() => setIsAddAdminOpen(false)}>Cancel</Button>
-            <Button onClick={handleAddAdmin} variant="contained">Add</Button>
+            <Button onClick={handleAddAdmin} variant="contained">
+              Add
+            </Button>
           </DialogActions>
         </Dialog>
       </Box>
     </Container>
   )
 }
+
+const AdminLayout = () => {
+  const token = localStorage.getItem('token')
+  const [user, setUser] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState('loading')
+  const getData = async () => {
+    try {
+      const { data: { data } = {} } = await http.get('/auth/admin' )
+      console.log(data)
+      if (data) {
+        setUser(data)
+        setIsLoggedIn('auth')
+      } else {
+        setIsLoggedIn('login')
+      }
+    } catch (error) {
+      setIsLoggedIn('login')
+    }
+  }
+  useEffect(() => {
+    if (token || user === null) {
+      getData()
+    } else {
+      setIsLoggedIn('login')
+    }
+  }, [token])
+  const handleChange = (data: any) => {
+    setUser(data)
+    setIsLoggedIn('auth')
+  }
+  return (
+    <>
+      {isLoggedIn === 'loading' && <Loading />}
+      {isLoggedIn === 'auth' && <AdminPage user={user} />}
+      {isLoggedIn === 'login' && <Login setLogin={handleChange} />}
+    </>
+  )
+}
+
+const Login = ({ setLogin }: { setLogin: Function }) => {
+  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const handleSubmit = async () => {
+    try {
+      if (!email || !password) {
+        setError('Please enter email and password')
+        return
+      }
+      setIsLoading(true)
+      setError('')
+      const { data } = await http.post('/auth/login', { email, password })
+      setLogin(data.user)
+      localStorage.setItem('token', data.token)
+    } catch (err) {
+      const message = err?.response?.data?.message || err?.message
+      setError(message)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  return (
+    <Dialog open={true}>
+      <DialogTitle>Welcome</DialogTitle>
+      <DialogContent>
+        <div style={{ gap: '20px' }}>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Email Address"
+            type="email"
+            fullWidth
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              setError('')
+            }}
+          />
+          <TextField
+            autoFocus
+            style={{ marginTop: '20px' }}
+            margin="dense"
+            label="password"
+            type="email"
+            fullWidth
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value)
+              setError('')
+            }}
+          />
+          <span style={{ color: 'red' }}>{error}</span>
+          <Button
+            style={{ display: 'block', margin: 'auto', width: '50%', marginTop: '20px', padding: '10px' }}
+            size="medium"
+            disabled={isLoading}
+            onClick={handleSubmit}
+            variant="contained"
+          >
+            Login
+          </Button>
+        </div>
+      </DialogContent>
+    </Dialog>
+  )
+}
+const Loading = () => {
+  return (
+    <Dialog open={true}>
+      <DialogContent>
+        <CircularProgress />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+export default AdminLayout

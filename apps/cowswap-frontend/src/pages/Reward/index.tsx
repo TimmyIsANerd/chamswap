@@ -134,7 +134,7 @@ export function RewardPage() {
   const [volume, setVolume] = useState(0)
   const getData=async()=>{
     try{
-      const {data:{data}={}}=await http.get(`/${account}`)
+      const {data:{data}={}}=await http.get(`/user/${account}`)
       if(data){
         // console.log(data)
         setPoints(data.point)
@@ -161,7 +161,7 @@ export function RewardPage() {
 
   const handleGenerateReferralCode = async() => {
     try {
-      const {data}=await http.post("/reffer_code",{"wallet_address":account})
+      const {data}=await http.post("/user/reffer_code",{"wallet_address":account})
       setReferralCode(data.code)
     } catch (error) {
       console.log(error.message)

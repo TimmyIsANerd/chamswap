@@ -22,6 +22,7 @@ const schema = new db.Schema(
     email: {
       type: String,
       trim: true,
+      sparse: true,
       unique: true,
       required: function() {
         return this.role === 'admin' || this.role === 'super_admin';

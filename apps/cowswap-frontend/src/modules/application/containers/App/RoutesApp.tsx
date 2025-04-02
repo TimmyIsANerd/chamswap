@@ -18,7 +18,7 @@ import { RedirectPathToSwapOnly, RedirectToPath } from 'legacy/pages/Swap/redire
 
 import { Routes as RoutesEnum, RoutesValues } from 'common/constants/routes'
 import Account, { AccountOverview } from 'pages/Account'
-import { AdminPage } from 'pages/Admin'
+import  AdminPage  from 'pages/Admin'
 import AdvancedOrdersPage from 'pages/AdvancedOrders'
 // import { BridgePage } from 'pages/Bridge'
 import { BuyPage } from 'pages/Buy'
