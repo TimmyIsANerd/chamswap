@@ -1,4 +1,4 @@
-import db from "../config/db.js";
+import db from '../config/db.js'
 
 const revenueSchema = new db.Schema(
   {
@@ -6,45 +6,44 @@ const revenueSchema = new db.Schema(
       type: String,
       required: true,
       trim: true,
-      ref: 'User'
+      ref: 'User',
     },
     transactionHash: {
       type: String,
       required: true,
       unique: true,
-      trim: true
+      trim: true,
     },
     transactionTime: {
       type: Date,
-      required: true
+      required: true,
     },
     tokenAmount: {
-      type: String,  // Using string to handle large numbers precisely
-      required: true
+      type: String, // Using string to handle large numbers precisely
+      required: true,
     },
     tokenSymbol: {
       type: String,
-      required: true
+      required: true,
     },
     usdAmount: {
       type: Number,
-      required: true
+      required: true,
     },
     totalUsdTraded: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   {
     timestamps: true,
-    collection: "revenue"
-  }
-);
+    collection: 'revenue',
+  },
+)
 
 // Index for faster wallet lookups
-revenueSchema.index({ walletAddress: 1 });
+revenueSchema.index({ walletAddress: 1 })
 
-const Revenue = db.model("Revenue", revenueSchema);
-Revenue.syncIndexes().catch((e) => console.log(e));
-
-export default Revenue;
+const Revenue = db.model('Revenue', revenueSchema)
+Revenue.syncIndexes().catch((e) => console.log(e))
+export default Revenue
