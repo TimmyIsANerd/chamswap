@@ -7,8 +7,8 @@ const http = axios.create({
 http.interceptors.request.use((config) => {
   const { intercept = true } = config
   if (!intercept) return config
-  const token = localStorage.getItem('token')
-  if (token) config.headers.authorization = `Bearer ${token}`
+  // const token = localStorage.getItem('token')
+  // if (token) config.headers.authorization = `Bearer ${token}`
   return config
 })
 export default http

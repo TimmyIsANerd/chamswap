@@ -29,6 +29,7 @@ import {
   InputAdornment,
   IconButton,
   MenuItem,
+  Grid,
 } from '@mui/material'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 
@@ -72,13 +73,13 @@ interface ProjectSettings {
 }
 
 interface Transaction {
-  txHash: string
-  walletAddress: string
-  transactionTime: string
-  tokenAmount: string
-  usdAmount: number
-  chainId: number
-  referralCode?: string
+  id: string
+  txReceipt: string
+  chain: string
+  amountInUSD: number
+  createdAt: number
+  updatedAt: number
+  trader: string
 }
 
 interface WalletData {
@@ -95,6 +96,8 @@ interface Trader {
   totalPoints: number
   referralCode: string
   referrals: Trader[]
+  createdAt: number
+  updatedAt: number
   txs: {
     id: string
     txReceipt: string
@@ -103,6 +106,19 @@ interface Trader {
     createdAt: number
     updatedAt: number
   }[]
+}
+
+interface DashboardStats {
+  txs: Transaction[]
+  traders: Trader[]
+  noOfTraders: number
+  totalTradingVolume: number
+  totalReferalTradingVolume: number
+  totalPoints: number
+  totalTradingVolumeBase: number
+  totalTradingVolumeEthereum: number
+  totalTradingVolumeArbitrumOne: number
+  totalTradingVolumeGenosis: number
 }
 
 const theme = createTheme({
@@ -150,6 +166,8 @@ const theme = createTheme({
   },
 })
 
+const SYSTEM_BEARER_TOKEN = import.meta.env.VITE_SYSTEM_BEARER_TOKEN
+
 function validatePassword(password: string): string | null {
   if (password.length < 8) {
     return 'Password must be at least 8 characters long'
@@ -175,6 +193,7 @@ function AdminPage({ user }: any) {
   const [admins, setAdmins] = useState<Admin[]>([])
   const [settings, setSettings] = useState<ProjectSettings>({ revenueWalletAddress: '', feePercentage: 0 })
   const [transactions, setTransactions] = useState<Transaction[]>([])
+  const [selectedChain, setSelectedChain] = useState<string>('all')
   const [wallets, setWallets] = useState<WalletData[]>([])
   const [traders, setTraders] = useState<Trader[]>([])
   const [selectedTrader, setSelectedTrader] = useState<Trader | null>(null)
@@ -193,11 +212,10 @@ function AdminPage({ user }: any) {
   const [showNewAdminConfirmPassword, setShowNewAdminConfirmPassword] = useState(false)
   const [isCreateTxOpen, setIsCreateTxOpen] = useState(false)
   const [newTx, setNewTx] = useState<Partial<Transaction>>({
-    walletAddress: '',
-    tokenAmount: '',
-    usdAmount: 0,
-    chainId: 1, // Default to Ethereum mainnet
-    referralCode: '',
+    txReceipt: '',
+    chain: 'base',
+    amountInUSD: 0,
+    trader: '',
   })
   const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false)
   const [currentPassword, setCurrentPassword] = useState('')
@@ -210,11 +228,29 @@ function AdminPage({ user }: any) {
   const [adminToUpdate, setAdminToUpdate] = useState<Admin | null>(null)
   const [adminPassword, setAdminPassword] = useState('')
   const [showAdminPassword, setShowAdminPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
+  const [isTransactionDetailsOpen, setIsTransactionDetailsOpen] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const POLLING_INTERVAL = 300000 // 5 minutes
+  const [retryCount, setRetryCount] = useState(0)
+  const MAX_RETRIES = 3
+  const RETRY_DELAY = 5000 // 5 seconds
+  const [stats, setStats] = useState<DashboardStats | null>(null)
+
+  // Filter transactions based on selected chain
+  const filteredTransactions =
+    selectedChain === 'all' ? transactions : transactions.filter((tx) => tx.chain === selectedChain)
 
   // Fetch data from backend
   const getAdmin = async () => {
     try {
-      const { data } = await http.get('/api/v1/admins')
+      const { data } = await http.get('/api/v1/admins', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
 
       setAdmins(data)
       console.log('Admins state:', data)
@@ -225,9 +261,15 @@ function AdminPage({ user }: any) {
       setIsError(true)
     }
   }
+
   const getSetting = async () => {
     try {
-      const { data } = await http.get('/api/v1/system/get-settings')
+      const { data } = await http.get('/api/v1/system/get-settings', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
       if (data) {
         setSettings(data)
       }
@@ -236,60 +278,124 @@ function AdminPage({ user }: any) {
       setIsError(true)
     }
   }
-  const fetchData = async () => {
+
+  // Function to handle rate limiting
+  const handleRateLimit = async (error: any) => {
+    if (error?.response?.status === 429) {
+      const retryAfter = error.response.headers['retry-after'] || 60
+      setNotificationMessage(`Rate limit exceeded. Retrying in ${retryAfter} seconds...`)
+      setIsError(true)
+
+      if (retryCount < MAX_RETRIES) {
+        setRetryCount((prev) => prev + 1)
+        await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000))
+        return true // Retry the request
+      } else {
+        setRetryCount(0)
+        setNotificationMessage('Maximum retry attempts reached. Please try again later.')
+        return false // Don't retry
+      }
+    }
+    return false // Don't retry for other errors
+  }
+
+  // Function to refresh all data with rate limit handling
+  const refreshAllData = async () => {
+    setIsRefreshing(true)
     try {
-      getAdmin()
-      getSetting()
-      // Fetch transactions
-      setTransactions([
-        {
-          txHash: '0x123...',
-          walletAddress: '0xabc...',
-          transactionTime: '2023-01-01 12:00:00',
-          tokenAmount: '100 ETH',
-          usdAmount: 180000,
-          chainId: 1,
-        },
+      const results = await Promise.allSettled([
+        getAdmin(),
+        getSetting(),
+        fetchTransactions(selectedChain),
+        getTraders(),
+        getDashboardStats(),
       ])
 
-      // Fetch wallet data
-      setWallets([
-        {
-          address: '0xabc...',
-          totalTradedUSD: 180000,
-        },
-      ])
+      // Handle any rate limit errors
+      for (const result of results) {
+        if (result.status === 'rejected' && result.reason?.response?.status === 429) {
+          const shouldRetry = await handleRateLimit(result.reason)
+          if (shouldRetry) {
+            return refreshAllData() // Retry the entire refresh
+          }
+        }
+      }
+
+      setRetryCount(0) // Reset retry count on successful refresh
     } catch (error) {
-      setNotificationMessage('Failed to fetch data')
-      setIsError(true)
+      console.error('Error refreshing data:', error)
+      if (error?.response?.status === 429) {
+        const shouldRetry = await handleRateLimit(error)
+        if (shouldRetry) {
+          return refreshAllData() // Retry the entire refresh
+        }
+      } else {
+        setNotificationMessage('Failed to refresh data')
+        setIsError(true)
+      }
+    } finally {
+      setIsRefreshing(false)
     }
   }
 
-  // Fetch traders data
-  const getTraders = async () => {
+  // Fetch transactions for a specific chain with rate limit handling
+  const fetchTransactions = async (chain: string) => {
+    setIsLoading(true)
     try {
-      const { data } = await http.get('/api/v1/traders', {
+      const endpoint = chain === 'all' ? '/api/v1/txs' : `/api/v1/txs/${chain}`
+      const { data } = await http.get(endpoint, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
       })
-      console.log(data)
+      setTransactions(data)
+    } catch (error) {
+      console.error('Error fetching transactions:', error)
+      if (error?.response?.status === 429) {
+        const shouldRetry = await handleRateLimit(error)
+        if (shouldRetry) {
+          return fetchTransactions(chain) // Retry the request
+        }
+      }
+      setNotificationMessage('Failed to fetch transactions')
+      setIsError(true)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Fetch traders data with rate limit handling
+  const getTraders = async () => {
+    try {
+      const { data } = await http.get('/api/v1/traders', {
+        headers: {
+          Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      })
       setTraders(data)
     } catch (error) {
       console.error('Failed to fetch traders:', error)
+      if (error?.response?.status === 429) {
+        const shouldRetry = await handleRateLimit(error)
+        if (shouldRetry) {
+          return getTraders() // Retry the request
+        }
+      }
       setNotificationMessage('Failed to fetch traders data')
       setIsError(true)
     }
   }
 
-  // Fetch trader details
+  // Fetch trader details using system bearer token
   const getTraderDetails = async (walletAddress: string) => {
     try {
       const { data } = await http.get(`/api/v1/trader/${walletAddress}/base`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
@@ -303,10 +409,24 @@ function AdminPage({ user }: any) {
     }
   }
 
+  // Handle chain change
+  const handleChainChange = (chain: string) => {
+    setSelectedChain(chain)
+    fetchTransactions(chain)
+  }
+
   useEffect(() => {
-    fetchData()
-    getTraders()
-  }, [])
+    if (notificationMessage) {
+      const timer = setTimeout(() => setNotificationMessage(''), 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [notificationMessage])
+
+  // Function to redact long strings
+  const redactString = (str: string, visibleChars: number = 5) => {
+    if (!str) return ''
+    return `...${str.slice(-visibleChars)}`
+  }
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
@@ -324,11 +444,20 @@ function AdminPage({ user }: any) {
       return
     }
     try {
-      await http.post('/api/v1/admin', {
-        emailAddress: newAdminEmail,
-        password: newAdminPassword,
-      })
-      await fetchData()
+      await http.post(
+        '/api/v1/admin',
+        {
+          emailAddress: newAdminEmail,
+          password: newAdminPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+      await refreshAllData()
       setNotificationMessage('Admin invitation sent successfully')
       setIsError(false)
       setIsAddAdminOpen(false)
@@ -344,8 +473,13 @@ function AdminPage({ user }: any) {
   const handleRemoveAdmin = async (adminId: string) => {
     setIsRemoving(true)
     try {
-      await http.delete(`/api/v1/admin/${adminId}`)
-      await fetchData()
+      await http.delete(`/api/v1/admin/${adminId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      await refreshAllData()
       setNotificationMessage('Admin removed successfully')
       setIsError(false)
     } catch (error) {
@@ -358,10 +492,20 @@ function AdminPage({ user }: any) {
 
   const handleUpdateSettings = async () => {
     try {
-      await http.post('/api/v1/system/change-settings', {
-        revenueWalletAddress: settings.revenueWalletAddress,
-        feePercentage: settings.feePercentage,
-      })
+      await http.post(
+        '/api/v1/system/change-settings',
+        {
+          revenueWalletAddress: settings.revenueWalletAddress,
+          feePercentage: settings.feePercentage,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        },
+      )
+      await refreshAllData()
       setNotificationMessage('Settings updated successfully')
       setIsError(false)
     } catch (error) {
@@ -376,27 +520,31 @@ function AdminPage({ user }: any) {
         '/api/v1/revenue/transaction',
         {
           ...newTx,
-          transactionTime: new Date().toISOString(),
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
             'Content-Type': 'application/json',
             Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
           },
+          withCredentials: true,
         },
       )
 
-      setTransactions([...transactions, data])
+      await refreshAllData()
       setNotificationMessage('Transaction created successfully')
       setIsError(false)
       setIsCreateTxOpen(false)
       setNewTx({
-        walletAddress: '',
-        tokenAmount: '',
-        usdAmount: 0,
-        chainId: 1,
-        referralCode: '',
+        txReceipt: '',
+        chain: 'base',
+        amountInUSD: 0,
+        trader: '',
       })
     } catch (error) {
       console.error('Failed to create transaction:', error)
@@ -472,7 +620,7 @@ function AdminPage({ user }: any) {
           },
         },
       )
-      await fetchData()
+      await refreshAllData()
       setNotificationMessage('Role updated successfully')
       setIsError(false)
       setIsChangeRoleOpen(false)
@@ -484,12 +632,41 @@ function AdminPage({ user }: any) {
     }
   }
 
+  // Set up polling with exponential backoff
   useEffect(() => {
-    if (notificationMessage) {
-      const timer = setTimeout(() => setNotificationMessage(''), 3000)
-      return () => clearTimeout(timer)
+    let timeoutId: NodeJS.Timeout
+
+    const poll = async () => {
+      await refreshAllData()
+      timeoutId = setTimeout(poll, POLLING_INTERVAL)
     }
-  }, [notificationMessage])
+
+    poll()
+
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+    }
+  }, [selectedChain]) // Re-run when chain changes
+
+  // Fetch dashboard stats
+  const getDashboardStats = async () => {
+    try {
+      const { data } = await http.get('/api/v1/dashboard/stats', {
+        headers: {
+          Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      })
+      setStats(data)
+    } catch (error) {
+      console.error('Failed to fetch dashboard stats:', error)
+      setNotificationMessage('Failed to fetch dashboard stats')
+      setIsError(true)
+    }
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -501,9 +678,19 @@ function AdminPage({ user }: any) {
             </Alert>
           )}
 
-          <Typography variant="h4" component="h1" gutterBottom>
-            <span style={{ textTransform: 'capitalize' }}>{user.role?.split('_').join(' ')} Dashboard</span>
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="h4" component="h1">
+              <span style={{ textTransform: 'capitalize' }}>{user.role?.split('_').join(' ')} Dashboard</span>
+            </Typography>
+            <Button
+              variant="outlined"
+              onClick={refreshAllData}
+              disabled={isRefreshing}
+              startIcon={isRefreshing ? <CircularProgress size={20} /> : null}
+            >
+              {isRefreshing ? 'Refreshing...' : 'Refresh Data'}
+            </Button>
+          </Box>
 
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={tabValue} onChange={handleTabChange}>
@@ -610,67 +797,181 @@ function AdminPage({ user }: any) {
           {/* Revenue Tracking Tab */}
           <TabPanel value={tabValue} index={2}>
             <Box sx={{ mb: 4 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+              {/* Stats Profile Section */}
+              <Box sx={{ mb: 4 }}>
                 <Typography variant="h6" gutterBottom>
-                  Wallet Overview
+                  Dashboard Statistics
                 </Typography>
-                <Button variant="contained" onClick={() => setIsCreateTxOpen(true)}>
-                  Create Transaction
-                </Button>
-              </Box>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Wallet Address</TableCell>
-                      <TableCell>Total Traded (USD)</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {wallets.map((wallet) => (
-                      <TableRow key={wallet.address}>
-                        <TableCell>{wallet.address}</TableCell>
-                        <TableCell>${wallet.totalTradedUSD.toLocaleString()}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
+                <Grid container spacing={3}>
+                  {/* Total Trading Volume */}
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Paper sx={{ p: 2, textAlign: 'center' }}>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Total Trading Volume
+                      </Typography>
+                      <Typography variant="h4" sx={{ mt: 1 }}>
+                        ${stats?.totalTradingVolume.toLocaleString() || 0}
+                      </Typography>
+                    </Paper>
+                  </Grid>
 
-            <Typography variant="h6" gutterBottom>
-              Transaction History
-            </Typography>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Transaction Hash</TableCell>
-                    <TableCell>Wallet Address</TableCell>
-                    <TableCell>Transaction Time</TableCell>
-                    <TableCell>Token Amount</TableCell>
-                    <TableCell>USD Amount</TableCell>
-                    <TableCell>Chain</TableCell>
-                    <TableCell>Referral Code</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {transactions.map((tx) => (
-                    <TableRow key={tx.txHash}>
-                      <TableCell>{tx.txHash}</TableCell>
-                      <TableCell>{tx.walletAddress}</TableCell>
-                      <TableCell>{tx.transactionTime}</TableCell>
-                      <TableCell>{tx.tokenAmount}</TableCell>
-                      <TableCell>${tx.usdAmount.toLocaleString()}</TableCell>
-                      <TableCell>
-                        {tx.chainId === 1 ? 'Ethereum' : tx.chainId === 100 ? 'Gnosis' : 'Arbitrum'}
-                      </TableCell>
-                      <TableCell>{tx.referralCode || '-'}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  {/* Number of Traders */}
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Paper sx={{ p: 2, textAlign: 'center' }}>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Total Traders
+                      </Typography>
+                      <Typography variant="h4" sx={{ mt: 1 }}>
+                        {stats?.noOfTraders || 0}
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  {/* Total Points */}
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Paper sx={{ p: 2, textAlign: 'center' }}>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Total Points
+                      </Typography>
+                      <Typography variant="h4" sx={{ mt: 1 }}>
+                        {stats?.totalPoints || 0}
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  {/* Referral Volume */}
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Paper sx={{ p: 2, textAlign: 'center' }}>
+                      <Typography variant="subtitle2" color="text.secondary">
+                        Referral Volume
+                      </Typography>
+                      <Typography variant="h4" sx={{ mt: 1 }}>
+                        ${stats?.totalReferalTradingVolume.toLocaleString() || 0}
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  {/* Chain-specific Volumes */}
+                  <Grid item xs={12}>
+                    <Paper sx={{ p: 2 }}>
+                      <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                        Trading Volume by Chain
+                      </Typography>
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6} md={3}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="body2" color="text.secondary">
+                              Base
+                            </Typography>
+                            <Typography variant="h6">${stats?.totalTradingVolumeBase.toLocaleString() || 0}</Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="body2" color="text.secondary">
+                              Ethereum
+                            </Typography>
+                            <Typography variant="h6">
+                              ${stats?.totalTradingVolumeEthereum.toLocaleString() || 0}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="body2" color="text.secondary">
+                              Arbitrum One
+                            </Typography>
+                            <Typography variant="h6">
+                              ${stats?.totalTradingVolumeArbitrumOne.toLocaleString() || 0}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={3}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="body2" color="text.secondary">
+                              Gnosis
+                            </Typography>
+                            <Typography variant="h6">
+                              ${stats?.totalTradingVolumeGenosis.toLocaleString() || 0}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Box>
+
+              {/* Transaction History Section */}
+              <Box sx={{ mb: 4 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  <Typography variant="h6" gutterBottom>
+                    Transaction History
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                    <TextField
+                      select
+                      label="Filter by Chain"
+                      value={selectedChain}
+                      onChange={(e) => handleChainChange(e.target.value)}
+                      sx={{ minWidth: 150 }}
+                    >
+                      <MenuItem value="all">All Chains</MenuItem>
+                      <MenuItem value="ethereum">Ethereum</MenuItem>
+                      <MenuItem value="genosis">Genosis</MenuItem>
+                      <MenuItem value="base">Base</MenuItem>
+                      <MenuItem value="arbitrum-one">Arbitrum One</MenuItem>
+                    </TextField>
+                  </Box>
+                </Box>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Transaction Hash</TableCell>
+                        <TableCell>Chain</TableCell>
+                        <TableCell>Amount (USD)</TableCell>
+                        <TableCell>Date</TableCell>
+                        <TableCell>Trader ID</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {isLoading || isRefreshing ? (
+                        <TableRow>
+                          <TableCell colSpan={5} align="center">
+                            <CircularProgress size={24} />
+                          </TableCell>
+                        </TableRow>
+                      ) : transactions.length > 0 ? (
+                        transactions.map((tx) => (
+                          <TableRow
+                            key={tx.id}
+                            hover
+                            onClick={() => {
+                              setSelectedTransaction(tx)
+                              setIsTransactionDetailsOpen(true)
+                            }}
+                            sx={{ cursor: 'pointer' }}
+                          >
+                            <TableCell>{redactString(tx.txReceipt, 8)}</TableCell>
+                            <TableCell>{tx.chain}</TableCell>
+                            <TableCell>${tx.amountInUSD.toLocaleString()}</TableCell>
+                            <TableCell>{new Date(tx.createdAt).toLocaleString()}</TableCell>
+                            <TableCell>{redactString(tx.trader)}</TableCell>
+                          </TableRow>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell colSpan={5} align="center">
+                            No transactions found
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            </Box>
           </TabPanel>
 
           {/* Traders Tab */}
@@ -681,9 +982,7 @@ function AdminPage({ user }: any) {
                   <TableRow>
                     <TableCell>Wallet Address</TableCell>
                     <TableCell>Total Volume (USD)</TableCell>
-                    <TableCell>Referral Volume</TableCell>
                     <TableCell>Points</TableCell>
-                    <TableCell>Referral Code</TableCell>
                     <TableCell>Actions</TableCell>
                   </TableRow>
                 </TableHead>
@@ -692,9 +991,7 @@ function AdminPage({ user }: any) {
                     <TableRow key={trader.id}>
                       <TableCell>{trader.walletAddress}</TableCell>
                       <TableCell>${trader.totalTradingVolume.toLocaleString()}</TableCell>
-                      <TableCell>${trader.referalTradingVolume.toLocaleString()}</TableCell>
                       <TableCell>{trader.totalPoints}</TableCell>
-                      <TableCell>{trader.referralCode}</TableCell>
                       <TableCell>
                         <Button variant="outlined" onClick={() => getTraderDetails(trader.walletAddress)}>
                           View Details
@@ -900,57 +1197,6 @@ function AdminPage({ user }: any) {
             </DialogActions>
           </Dialog>
 
-          {/* Create Transaction Dialog */}
-          <Dialog open={isCreateTxOpen} onClose={() => setIsCreateTxOpen(false)} maxWidth="sm" fullWidth>
-            <DialogTitle>Create New Transaction</DialogTitle>
-            <DialogContent>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-                <TextField
-                  label="Wallet Address"
-                  value={newTx.walletAddress}
-                  onChange={(e) => setNewTx({ ...newTx, walletAddress: e.target.value })}
-                  fullWidth
-                />
-                <TextField
-                  label="Token Amount"
-                  value={newTx.tokenAmount}
-                  onChange={(e) => setNewTx({ ...newTx, tokenAmount: e.target.value })}
-                  fullWidth
-                />
-                <TextField
-                  label="USD Amount"
-                  type="number"
-                  value={newTx.usdAmount}
-                  onChange={(e) => setNewTx({ ...newTx, usdAmount: Number(e.target.value) })}
-                  fullWidth
-                />
-                <TextField
-                  select
-                  label="Chain"
-                  value={newTx.chainId}
-                  onChange={(e) => setNewTx({ ...newTx, chainId: Number(e.target.value) })}
-                  fullWidth
-                >
-                  <MenuItem value={1}>Ethereum</MenuItem>
-                  <MenuItem value={100}>Gnosis</MenuItem>
-                  <MenuItem value={42161}>Arbitrum</MenuItem>
-                </TextField>
-                <TextField
-                  label="Referral Code (Optional)"
-                  value={newTx.referralCode}
-                  onChange={(e) => setNewTx({ ...newTx, referralCode: e.target.value })}
-                  fullWidth
-                />
-              </Box>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setIsCreateTxOpen(false)}>Cancel</Button>
-              <Button onClick={handleCreateTransaction} variant="contained">
-                Create
-              </Button>
-            </DialogActions>
-          </Dialog>
-
           {/* Change Password Dialog */}
           <Dialog open={isChangePasswordOpen} fullWidth onClose={() => setIsChangePasswordOpen(false)}>
             <DialogTitle>Change Password</DialogTitle>
@@ -1080,6 +1326,77 @@ function AdminPage({ user }: any) {
                 }}
               >
                 Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {/* Transaction Details Dialog */}
+          <Dialog
+            open={isTransactionDetailsOpen}
+            onClose={() => {
+              setIsTransactionDetailsOpen(false)
+              setSelectedTransaction(null)
+            }}
+            maxWidth="sm"
+            fullWidth
+          >
+            <DialogTitle>Transaction Details</DialogTitle>
+            <DialogContent>
+              {selectedTransaction && (
+                <Box sx={{ mt: 2 }}>
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                            Transaction Hash
+                          </TableCell>
+                          <TableCell>{selectedTransaction.txReceipt}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                            Chain
+                          </TableCell>
+                          <TableCell>{selectedTransaction.chain}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                            Amount (USD)
+                          </TableCell>
+                          <TableCell>${selectedTransaction.amountInUSD.toLocaleString()}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                            Date
+                          </TableCell>
+                          <TableCell>{new Date(selectedTransaction.createdAt).toLocaleString()}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                            Trader ID
+                          </TableCell>
+                          <TableCell>{selectedTransaction.trader}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell component="th" scope="row" sx={{ fontWeight: 'bold' }}>
+                            Transaction ID
+                          </TableCell>
+                          <TableCell>{selectedTransaction.id}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => {
+                  setIsTransactionDetailsOpen(false)
+                  setSelectedTransaction(null)
+                }}
+              >
+                Close
               </Button>
             </DialogActions>
           </Dialog>
