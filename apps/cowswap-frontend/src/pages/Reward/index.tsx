@@ -9,6 +9,9 @@ import styled from 'styled-components/macro'
 import { generateReferralCode } from './utils'
 import http from 'utils/http'
 
+// Import Bearer from ENV
+const SYSTEM_BEARER_TOKEN = import.meta.env.VITE_SYSTEM_BEARER_TOKEN
+
 
 const Wrapper = styled.div`
   width: 100%;
@@ -127,22 +130,39 @@ const InfoList = styled.ul`
 `
 
 export function RewardPage() {
-  const { account } = useWalletInfo()
+  const { account, chainId } = useWalletInfo()
   const [referralCode, setReferralCode] = useState<string | null>(null)
   const [points, setPoints] = useState(0)
   const [referrals, setReferrals] = useState(0)
   const [volume, setVolume] = useState(0)
-  const getData=async()=>{
-    try{
-      const {data:{data}={}}=await http.get(`/user/${account}`)
-      if(data){
-        // console.log(data)
-        setPoints(data.point)
-        setReferrals(data.total_refferal)
-        setReferralCode(data.reffer_code)
-        setVolume(0)
+  const getData = async () => {
+    try {
+      const chains = {
+        1: 'ethereum',
+        11155111: 'sepolia',
+        42161: 'arbitrum-one',
+        100: 'gnosis',
+        8453: 'base',
       }
-    }catch(error){
+
+      const response = await http.get(`/api/v1/trader/${account}/${chains[chainId]}`,
+        {
+          headers: {
+            Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        },
+      )
+      const { trader } = response.data
+      if (trader) {
+        // console.log(trader)
+        setPoints(trader.totalPoints)
+        setReferrals(trader.referrals.length)
+        setReferralCode(trader.referralCode)
+        setVolume(trader.totalTradingVolume)
+      }
+    } catch (error) {
       console.log(error.message)
     }
   }
@@ -159,10 +179,16 @@ export function RewardPage() {
     }
   }, [account])
 
-  const handleGenerateReferralCode = async() => {
+  const handleGenerateReferralCode = async () => {
     try {
-      const {data}=await http.post("/user/reffer_code",{"wallet_address":account})
-      setReferralCode(data.code)
+      const { data } = await http.get(`/api/v1/trader/referral-code/${account}`, {
+        headers: {
+          Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      })
+      setReferralCode(data.referralCode)
     } catch (error) {
       console.log(error.message)
       console.log(error)
@@ -170,7 +196,7 @@ export function RewardPage() {
   }
 
   const copyReferralLink = () => {
-    const link = `https://chameleon.exchange?ref=${referralCode}`
+    const link = `https://chameleon.exchange/#/referral?ref=${referralCode}`
     navigator.clipboard.writeText(link)
     // TODO: Add toast notification for successful copy
   }
@@ -197,7 +223,7 @@ export function RewardPage() {
   return (
     <Wrapper>
       <Title><Trans>Chameleon Rewards & Referrals</Trans></Title>
-      
+
       <ContentCard>
         <ReferralCodeSection>
           {referralCode ? (

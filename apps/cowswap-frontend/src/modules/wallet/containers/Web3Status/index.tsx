@@ -25,35 +25,35 @@ export function Web3Status({ pendingActivities, className, onClick }: Web3Status
   const refCode = queryParams.get("ref"); 
 
   const { ensName } = useWalletDetails()
-  const connectWallet=async()=>{
-    try {
-      if(account !==undefined){
-        try {
-          const response = await http.post("/connect_wallet", {
-            wallet_address: account,
-            reffer_by: refCode
-          }, {
-            intercept: false
-          });
+  // const connectWallet=async()=>{
+  //   try {
+  //     if(account !==undefined){
+  //       try {
+  //         const response = await http.post("/api/v1/trader", {
+  //           wallet_address: account,
+  //           reffer_by: refCode
+  //         }, {
+  //           intercept: false
+  //         });
           
-          if (response?.status === 200) {
-            console.log("Wallet connected successfully");
-          } else {
-            console.warn("Unexpected response from connect_wallet endpoint");
-          }
-        } catch (err) {
-          console.error("Failed to connect wallet:", err);
-        }
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(()=>{
-    if(!!account){
-      connectWallet()
-    }
-  },[account])
+  //         if (response?.status === 200) {
+  //           console.log("Wallet connected successfully");
+  //         } else {
+  //           console.warn("Unexpected response from connect_wallet endpoint");
+  //         }
+  //       } catch (err) {
+  //         console.error("Failed to connect wallet:", err);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+  // useEffect(()=>{
+  //   if(!!account){
+  //     connectWallet()
+  //   }
+  // },[account])
 
   const toggleWalletModal = useToggleWalletModal()
 

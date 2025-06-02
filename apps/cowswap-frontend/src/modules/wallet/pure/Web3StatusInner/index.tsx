@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { shortenAddress } from '@cowprotocol/common-utils'
 import { Command } from '@cowprotocol/types'
 import { Loader, RowBetween } from '@cowprotocol/ui'
@@ -13,6 +14,13 @@ import { Text, Web3StatusConnect, Web3StatusConnected } from './styled'
 
 import { StatusIcon } from '../StatusIcon'
 
+// Referall Link Implementation
+import http from 'utils/http'
+import { useLocation } from 'react-router-dom';
+
+// Import ENV VITE_SYSTEM_BEARER_TOKEN from .env
+const SYSTEM_BEARER_TOKEN = import.meta.env.VITE_SYSTEM_BEARER_TOKEN
+
 export interface Web3StatusInnerProps {
   account?: string
   pendingCount: number
@@ -27,6 +35,33 @@ export function Web3StatusInner(props: Web3StatusInnerProps) {
   const hasPendingTransactions = !!pendingCount
   const isUpToExtraSmall = useMediaQuery(upToExtraSmall)
   const isUpToTiny = useMediaQuery(upToTiny)
+  const location = useLocation()
+
+  const queryParmams = new URLSearchParams(location.search);
+  const referral = queryParmams.get('ref')
+
+
+  async function createNewUser() {
+    try {
+      const response = await http.post('/api/v1/trader', { walletAddress: account, referralCode: referral ? referral : "" }, {
+        headers: {
+          Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
+        },
+      })
+
+      return response.data.message;
+    } catch (error) {
+      console.error(error);
+      return "Error creating user";
+    }
+  }
+
+  useEffect(() => {
+    // Make API Call
+    if (account) {
+      createNewUser()
+    }
+  }, [account])
 
   if (account) {
     return (

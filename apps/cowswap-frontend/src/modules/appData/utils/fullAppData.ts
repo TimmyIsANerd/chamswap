@@ -3,12 +3,51 @@ import { EnvironmentName, environmentName } from '@cowprotocol/common-utils'
 import { AppDataInfo } from '../types'
 import { toKeccak256 } from '../utils/buildAppData'
 
+import http from 'utils/http'
+
+// import VITE_SYSTEM_BEARER_TOKEN
+const SYSTEM_BEARER_TOKEN = import.meta.env.VITE_SYSTEM_BEARER_TOKEN
+
 const DEFAULT_FULL_APP_DATA = '{"version":"1.3.0","appCode":"Chameleaon swap","metadata":{}}'
 
-let appData: AppDataInfo = (() => {
-  const fullAppData = getFullAppDataByEnv(environmentName)
-  return _fromFullAppData(fullAppData)
+let appData: any = (async () => {
+  const objAppData = JSON.parse(DEFAULT_FULL_APP_DATA)
+  const systemSettings = await getSystemSettings()
+  const moddedAppData = systemSettings
+    ? {
+      ...objAppData,
+      metadata: {
+        ...objAppData.metadata,
+        partnerFee: systemSettings.feePercentage,
+        referrer: {
+          address: systemSettings.revenueWalletAddress,
+        }
+      },
+    }
+    : objAppData
+  return _fromFullAppData(JSON.stringify(moddedAppData))
 })()
+
+interface SystemSettings {
+  revenueWalletAddress: string
+  feePercentage: number
+}
+
+async function getSystemSettings(): Promise<SystemSettings | null> {
+  try {
+    const { data } = await http.get('/api/v1/system/get-settings', {
+      headers: {
+        Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+    return data
+  } catch (error) {
+    console.error('Failed to fetch system settings:', error)
+    return null
+  }
+}
 
 export function getAppData() {
   return appData
