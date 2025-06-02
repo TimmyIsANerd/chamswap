@@ -6,6 +6,7 @@ import { CowEnv, SupportedChainId } from '@cowprotocol/cow-sdk'
 import { AppCodeWithWidgetMetadata } from 'modules/injectedWidget/hooks/useAppCodeWidgetAware'
 import { UtmParams } from 'modules/utm'
 
+import { addFeeInfoToAppData } from '../services/feeAppDataService'
 import { appDataInfoAtom } from '../state/atoms'
 import { AppDataOrderClass, AppDataPartnerFee, TypedAppDataHooks } from '../types'
 import { buildAppData, BuildAppDataParams } from '../utils/buildAppData'
@@ -21,6 +22,7 @@ export type UseAppDataParams = {
   typedHooks?: TypedAppDataHooks
   volumeFee?: AppDataPartnerFee
   replacedOrderUid?: string
+  includeFeeInfo?: boolean // New parameter to control fee info inclusion
 }
 
 /**
@@ -37,6 +39,7 @@ export function AppDataInfoUpdater({
   typedHooks,
   volumeFee,
   replacedOrderUid,
+  includeFeeInfo = true, // Default to true to include fee info
 }: UseAppDataParams): void {
   // AppDataInfo, from Jotai
   const setAppDataInfo = useSetAtom(appDataInfoAtom)
@@ -67,9 +70,18 @@ export function AppDataInfoUpdater({
 
     const updateAppData = async (): Promise<void> => {
       try {
-        const { doc, fullAppData, appDataKeccak256 } = await buildAppData(params)
+        // Build initial AppData
+        let appDataInfo = await buildAppData(params)
 
-        setAppDataInfo({ doc, fullAppData, appDataKeccak256, env: getEnvByClass(orderClass) })
+        // Add fee info if needed
+        if (includeFeeInfo) {
+          appDataInfo = await addFeeInfoToAppData(appDataInfo)
+        }
+
+        setAppDataInfo({
+          ...appDataInfo,
+          env: getEnvByClass(orderClass),
+        })
       } catch (e: any) {
         console.error(`[useAppData] failed to build appData, falling back to default`, params, e)
         setAppDataInfo(getAppData())
@@ -89,6 +101,7 @@ export function AppDataInfoUpdater({
     volumeFee,
     replacedOrderUid,
     isSmartSlippage,
+    includeFeeInfo,
   ])
 }
 

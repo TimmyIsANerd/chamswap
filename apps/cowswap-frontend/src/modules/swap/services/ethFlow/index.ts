@@ -128,7 +128,15 @@ export async function ethFlow(
       callbacks.dispatch,
     )
     // TODO: maybe move this into addPendingOrderStep?
-    addTransaction({ hash: txReceipt.hash, ethFlow: { orderId: order.id, subType: 'creation' } })
+    addTransaction({
+      hash: txReceipt.hash,
+      ethFlow: { orderId: order.id, subType: 'creation' },
+      data: { value: orderParams.inputAmount.quotient.toString() },
+    })
+
+    console.log('[FinalizeTxUpdater] Transaction receipt:', txReceipt)
+    console.log('[FinalizeTxUpdater] Transaction value:', orderParams.inputAmount.quotient.toString())
+    console.log('[FinalizeTxUpdater] Transaction data:', txReceipt.data)
 
     logTradeFlow('ETH FLOW', 'STEP 6: add app data to upload queue')
     uploadAppData({ chainId: context.chainId, orderId, appData })

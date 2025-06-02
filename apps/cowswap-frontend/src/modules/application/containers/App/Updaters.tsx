@@ -11,6 +11,7 @@ import { BalancesCombinedUpdater } from 'modules/combinedBalances/updater/Balanc
 import { CowEventsUpdater, InjectedWidgetUpdater, useInjectedWidgetParams } from 'modules/injectedWidget'
 import { FinalizeTxUpdater } from 'modules/onchainTransactions'
 import { OrdersNotificationsUpdater } from 'modules/orders'
+import { ReferralUpdater } from 'modules/referral/updaters/ReferralUpdater'
 import { EthFlowDeadlineUpdater } from 'modules/swap/state/EthFlow/updaters'
 import { useOnTokenListAddingError } from 'modules/tokensList'
 import { TradeType, useTradeTypeInfo } from 'modules/trade'
@@ -73,6 +74,7 @@ export function Updaters() {
       <ProgressBarV2ExecutingOrdersUpdater />
       <SolversInfoUpdater />
       <AnnouncementsUpdater />
+      <ReferralUpdater />
 
       <TokensListsUpdater
         chainId={chainId}
