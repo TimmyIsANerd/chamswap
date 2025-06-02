@@ -7,7 +7,7 @@ export const TRADE_WIDGET_PREFIX = isInjectedWidget() ? '/widget' : ''
 export const Routes = {
   HOME: `/landingpage`,
   REWARD: `/rewardpage`,
-  BUY:`/buypage`,
+  BUY: `/buypage`,
   // BRIDGE: `/bridgepage`,
   ADMIN: `adminpage`,
   SWAPS: `/swap`,
@@ -43,6 +43,7 @@ export const Routes = {
   DOCS: '/docs',
   STATS: '/stats',
   TWITTER: '/twitter',
+  REFERRAL_CONFIRMATION: '/referral',
 } as const
 
 export type RoutesKeys = keyof typeof Routes
