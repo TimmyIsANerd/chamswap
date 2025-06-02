@@ -1,9 +1,11 @@
+import { useState, useEffect } from 'react'
 
 import { WRAPPED_NATIVE_CURRENCIES as WETH } from '@cowprotocol/common-const'
 import { useWalletInfo } from '@cowprotocol/wallet'
 
 import { Navigate, useLocation, useParams } from 'react-router-dom'
 
+import { ReferralPopup } from 'modules/referral/components/ReferralPopup'
 import { SwapUpdaters, SwapWidget } from 'modules/swap'
 import { getDefaultTradeRawState } from 'modules/trade/types/TradeRawState'
 import { parameterizeTradeRoute } from 'modules/trade/utils/parameterizeTradeRoute'
@@ -12,6 +14,18 @@ import { Routes } from 'common/constants/routes'
 
 export function SwapPage() {
   const params = useParams()
+  const location = useLocation()
+  const [showReferralPopup, setShowReferralPopup] = useState(false)
+  const [referralCode, setReferralCode] = useState<string | null>(null)
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search)
+    const refCode = searchParams.get('ref')
+    if (refCode) {
+      setReferralCode(refCode)
+      setShowReferralPopup(true)
+    }
+  }, [location.search])
 
   if (!params.chainId) {
     return <SwapPageRedirect />
@@ -21,6 +35,9 @@ export function SwapPage() {
     <>
       <SwapUpdaters />
       <SwapWidget />
+      {showReferralPopup && referralCode && (
+        <ReferralPopup referralCode={referralCode} onClose={() => setShowReferralPopup(false)} />
+      )}
     </>
   )
 }

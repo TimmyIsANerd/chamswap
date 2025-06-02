@@ -38,6 +38,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import LockIcon from '@mui/icons-material/Lock'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import { SystemSettings, getSystemSettings } from 'modules/system/services/systemSettings'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -152,6 +153,15 @@ const theme = createTheme({
         root: {
           color: '#1A1A1A',
           borderColor: '#1A1A1A',
+          '&.MuiButton-outlined': {
+            color: '#FFFFFF',
+            borderColor: '#1A1A1A',
+            backgroundColor: '#1A1A1A',
+            '&:hover': {
+              backgroundColor: '#333333',
+              borderColor: '#333333',
+            },
+          },
         },
       },
     },
@@ -160,6 +170,40 @@ const theme = createTheme({
         root: {
           color: '#1A1A1A',
           borderColor: '#E0E0E0',
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#1A1A1A',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: '#1A1A1A',
+          },
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          color: '#FFFFFF',
+        },
+        icon: {
+          color: '#FFFFFF',
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {},
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          color: '#FFFFFF',
         },
       },
     },
@@ -231,8 +275,9 @@ function AdminPage({ user }: any) {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
   const [isTransactionDetailsOpen, setIsTransactionDetailsOpen] = useState(false)
+  const [isLoadingTransactionDetails, setIsLoadingTransactionDetails] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const POLLING_INTERVAL = 300000 // 5 minutes
+  const POLLING_INTERVAL = 600000 // 5 minutes
   const [retryCount, setRetryCount] = useState(0)
   const MAX_RETRIES = 3
   const RETRY_DELAY = 5000 // 5 seconds
@@ -262,22 +307,19 @@ function AdminPage({ user }: any) {
     }
   }
 
-  const getSetting = async () => {
-    try {
-      const { data } = await http.get('/api/v1/system/get-settings', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      if (data) {
-        setSettings(data)
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const settings = await getSystemSettings()
+        setSettings(settings)
+      } catch (error) {
+        setNotificationMessage('Failed to fetch data')
+        setIsError(true)
       }
-    } catch (error) {
-      setNotificationMessage('Failed to fetch data')
-      setIsError(true)
     }
-  }
+
+    fetchSettings()
+  }, [])
 
   // Function to handle rate limiting
   const handleRateLimit = async (error: any) => {
@@ -305,7 +347,7 @@ function AdminPage({ user }: any) {
     try {
       const results = await Promise.allSettled([
         getAdmin(),
-        getSetting(),
+        getSystemSettings(),
         fetchTransactions(selectedChain),
         getTraders(),
         getDashboardStats(),
@@ -668,6 +710,61 @@ function AdminPage({ user }: any) {
     }
   }
 
+  // Fetch transaction details
+  const getTransactionDetails = async (txId: string) => {
+    setIsLoadingTransactionDetails(true)
+    try {
+      const { data } = await http.get(`/api/v1/tx/${txId}`, {
+        headers: {
+          Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      })
+      setSelectedTransaction(data.tx)
+      setIsTransactionDetailsOpen(true)
+    } catch (error) {
+      console.error('Failed to fetch transaction details:', error)
+      setNotificationMessage('Failed to fetch transaction details')
+      setIsError(true)
+    } finally {
+      setIsLoadingTransactionDetails(false)
+    }
+  }
+
+  // Create new transaction from swap
+  const createTransactionFromSwap = async (swapData: {
+    trader: string
+    txReceipt: string
+    chain: string
+    amountInUSD: number
+  }) => {
+    try {
+      const formData = new FormData()
+      formData.append('trader', swapData.trader)
+      formData.append('txReceipt', swapData.txReceipt)
+      formData.append('chain', swapData.chain)
+      formData.append('amountInUSD', swapData.amountInUSD.toString())
+
+      await http.post('/api/v1/tx', formData, {
+        headers: {
+          Authorization: `Bearer ${SYSTEM_BEARER_TOKEN}`,
+          'Content-Type': 'multipart/form-data',
+          Accept: 'application/json',
+        },
+      })
+
+      // Refresh the transactions list after successful creation
+      await fetchTransactions(selectedChain)
+      setNotificationMessage('Transaction created successfully')
+      setIsError(false)
+    } catch (error) {
+      console.error('Failed to create transaction:', error)
+      setNotificationMessage('Failed to create transaction')
+      setIsError(true)
+    }
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container maxWidth="lg" sx={{ backgroundColor: 'var(--cow-color-paper)' }}>
@@ -921,6 +1018,7 @@ function AdminPage({ user }: any) {
                       <MenuItem value="genosis">Genosis</MenuItem>
                       <MenuItem value="base">Base</MenuItem>
                       <MenuItem value="arbitrum-one">Arbitrum One</MenuItem>
+                      <MenuItem value="sepolia">Sepolia</MenuItem>
                     </TextField>
                   </Box>
                 </Box>
@@ -943,17 +1041,14 @@ function AdminPage({ user }: any) {
                           </TableCell>
                         </TableRow>
                       ) : transactions.length > 0 ? (
-                        transactions.map((tx) => (
+                        [...transactions].reverse().map((tx) => (
                           <TableRow
                             key={tx.id}
                             hover
-                            onClick={() => {
-                              setSelectedTransaction(tx)
-                              setIsTransactionDetailsOpen(true)
-                            }}
+                            onClick={() => getTransactionDetails(tx.id)}
                             sx={{ cursor: 'pointer' }}
                           >
-                            <TableCell>{redactString(tx.txReceipt, 8)}</TableCell>
+                            <TableCell>{redactString(tx.txReceipt, 15)}</TableCell>
                             <TableCell>{tx.chain}</TableCell>
                             <TableCell>${tx.amountInUSD.toLocaleString()}</TableCell>
                             <TableCell>{new Date(tx.createdAt).toLocaleString()}</TableCell>
@@ -1342,7 +1437,11 @@ function AdminPage({ user }: any) {
           >
             <DialogTitle>Transaction Details</DialogTitle>
             <DialogContent>
-              {selectedTransaction && (
+              {isLoadingTransactionDetails ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+                  <CircularProgress />
+                </Box>
+              ) : selectedTransaction ? (
                 <Box sx={{ mt: 2 }}>
                   <TableContainer component={Paper}>
                     <Table>
@@ -1386,6 +1485,10 @@ function AdminPage({ user }: any) {
                       </TableBody>
                     </Table>
                   </TableContainer>
+                </Box>
+              ) : (
+                <Box sx={{ p: 3, textAlign: 'center' }}>
+                  <Typography color="text.secondary">No transaction details available</Typography>
                 </Box>
               )}
             </DialogContent>

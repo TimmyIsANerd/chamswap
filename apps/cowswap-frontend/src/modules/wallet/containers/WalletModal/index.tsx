@@ -2,6 +2,7 @@ import { useSetAtom } from 'jotai'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { errorToString } from '@cowprotocol/common-utils'
+import { SupportedChainId } from '@cowprotocol/cow-sdk'
 import { useWalletInfo, useActivateConnector, ConnectionType } from '@cowprotocol/wallet'
 
 import { useCloseModal, useModalIsOpen } from 'legacy/state/application/hooks'
@@ -10,6 +11,7 @@ import { useAppDispatch } from 'legacy/state/hooks'
 import { updateSelectedWallet } from 'legacy/state/user/reducer'
 
 import { useAccountModalState } from 'modules/account'
+import { ReferralService } from 'modules/referral/services/ReferralService'
 
 import { useSetWalletConnectionError } from '../../hooks/useSetWalletConnectionError'
 import { useWalletConnectionError } from '../../hooks/useWalletConnectionError'
@@ -18,7 +20,7 @@ import { toggleAccountSelectorModalAtom } from '../AccountSelectorModal/state'
 
 export function WalletModal() {
   const dispatch = useAppDispatch()
-  const { account } = useWalletInfo()
+  const { account, chainId } = useWalletInfo()
   const setWalletConnectionError = useSetWalletConnectionError()
 
   const [walletView, setWalletView] = useState<WalletModalView>('options')
@@ -36,11 +38,40 @@ export function WalletModal() {
   // Wallet changing currently is only possible through the account modal
   const isWalletChangingFlow = isAccountModalOpen
 
+  // Register trader and close modal when wallet is connected
+  useEffect(() => {
+    if (account && chainId && walletModalOpen) {
+      const referralService = ReferralService.getInstance()
+      const referralCode = localStorage.getItem('referralCode')
+
+      // Register trader with referral code if available
+      referralService
+        .registerTrader(account, chainId as SupportedChainId, referralCode || undefined)
+        .then(() => {
+          console.log('[WalletModal] Trader registered successfully, closing modal')
+          closeWalletModal()
+        })
+        .catch((error) => {
+          console.error('[WalletModal] Error registering trader:', error)
+          // Still close the modal even if registration fails
+          closeWalletModal()
+        })
+    }
+  }, [account, chainId, walletModalOpen, closeWalletModal])
+
+  // Update wallet view when modal opens or account changes
   useEffect(() => {
     if (walletModalOpen) {
       setWalletView(account ? 'account' : 'options')
     }
   }, [walletModalOpen, setWalletView, account])
+
+  // Close modal if account is detected
+  useEffect(() => {
+    if (account && walletModalOpen && !isPendingView) {
+      closeWalletModal()
+    }
+  }, [account, walletModalOpen, closeWalletModal, isPendingView])
 
   useEffect(() => {
     if (!isPendingView) {
@@ -71,8 +102,8 @@ export function WalletModal() {
           setWalletConnectionError(errorToString(error))
         },
       }),
-      [isWalletChangingFlow, closeWalletModal, dispatch, setWalletConnectionError, toggleAccountSelectorModal]
-    )
+      [isWalletChangingFlow, closeWalletModal, dispatch, setWalletConnectionError, toggleAccountSelectorModal],
+    ),
   )
 
   return (
