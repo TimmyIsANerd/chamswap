@@ -18,7 +18,7 @@ import { RedirectPathToSwapOnly, RedirectToPath } from 'legacy/pages/Swap/redire
 
 import { Routes as RoutesEnum, RoutesValues } from 'common/constants/routes'
 import Account, { AccountOverview } from 'pages/Account'
-import  AdminPage  from 'pages/Admin'
+import AdminPage from 'pages/Admin'
 import AdvancedOrdersPage from 'pages/AdvancedOrders'
 // import { BridgePage } from 'pages/Bridge'
 import { BuyPage } from 'pages/Buy'
@@ -30,6 +30,7 @@ import LimitOrderPage from 'pages/LimitOrders'
 import { RewardPage } from 'pages/Reward'
 import { SwapPage } from 'pages/Swap'
 import YieldPage from 'pages/Yield'
+import ReferralConfirmation from 'pages/ReferralConfirmation'
 
 // Async routes
 // const NotFound = lazy(() => import(/* webpackChunkName: "not_found" */ 'pages/error/NotFound'))
@@ -63,7 +64,7 @@ const lazyRoutes: LazyRouteProps[] = [
   { route: RoutesEnum.LONG_LIMIT_ORDER, element: <RedirectToPath path={'/limit'} /> },
   { route: RoutesEnum.ADVANCED_ORDERS, element: <AdvancedOrdersPage /> },
   // { route: RoutesEnum.BRIDGE, element: <BridgePage />},
-  { route: RoutesEnum.ADMIN, element: <AdminPage />},
+  { route: RoutesEnum.ADMIN, element: <AdminPage /> },
   { route: RoutesEnum.BUY, element: <BuyPage /> },
   { route: RoutesEnum.REWARD, element: <RewardPage /> },
   { route: RoutesEnum.HOME, element: <LandingPage /> },
@@ -86,6 +87,8 @@ export function RoutesApp() {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
+        {/* Referral Confirmation Page */}
+        <Route path="referral" element={<ReferralConfirmation />} />
         {/*Account*/}
         <Route path={RoutesEnum.ACCOUNT} element={<Account />}>
           <Route path={RoutesEnum.ACCOUNT} element={<AccountOverview />} />
@@ -99,7 +102,7 @@ export function RoutesApp() {
         <Route path={RoutesEnum.ADMIN} element={<AdminPage />} />
         <Route path={RoutesEnum.BUY} element={<BuyPage />} />
         <Route path={RoutesEnum.REWARD} element={<RewardPage />} />
-        <Route path={RoutesEnum.SWAP} element={<SwapPage />} />   
+        <Route path={RoutesEnum.SWAP} element={<SwapPage />} />
         <Route path={RoutesEnum.HOOKS} element={<HooksPage />} />
         <Route path={RoutesEnum.COW_SHED} element={<CowShed />} />
         <Route path={RoutesEnum.SEND} element={<RedirectPathToSwapOnly />} />
