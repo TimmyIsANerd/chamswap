@@ -19,7 +19,7 @@
     "start:sdk-tools": "nx run sdk-tools:serve",
     "build": "yarn run build:cowswap",
     "build:all": "nx run-many -t build",
-    "build:cowswap": "nx build cowswap-frontend",
+    "build:cowswap": "nx build cowswap-frontend --skip-nx-cache",
     "build:explorer": "nx build explorer",
     "build:widget": "nx build widget-configurator",
     "build:cowfi": "nx build cow-fi && yarn postbuild:cowfi",
