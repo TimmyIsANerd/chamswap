@@ -89,6 +89,8 @@ export default defineConfig(({ mode }) => {
           // your custom rules
           'apps/cowswap-frontend/src',
           'libs',
+          "../..",
+          '../../node_modules/inter-ui'
         ],
       },
       proxy: {
