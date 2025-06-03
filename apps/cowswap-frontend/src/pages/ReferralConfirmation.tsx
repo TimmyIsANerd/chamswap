@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useReferralSignup } from 'modules/referral/useReferralSignup'
 import { useWeb3React } from '@web3-react/core'
 import { shortenAddress } from '@cowprotocol/common-utils'
@@ -11,7 +11,6 @@ const CenteredContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  /* background: var(${UI.COLOR_PAPER}); */
 `
 
 const Card = styled.div`
@@ -55,7 +54,7 @@ const Success = styled.div`
 `
 
 const Error = styled.div`
-  color: var(${UI.COLOR_ERROR});
+  color: var(${UI.COLOR_DANGER});
   font-weight: 600;
   margin-top: 1.5rem;
   text-align: center;
@@ -73,7 +72,7 @@ const Welcome = styled.h2`
 
 const Subtitle = styled.div`
   font-size: 1.15rem;
-  color: var(${UI.COLOR_TEXT_SECONDARY});
+  color: var(${UI.COLOR_SECONDARY});
   margin-bottom: 2.2rem;
   text-align: center;
   max-width: 350px;
