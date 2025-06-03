@@ -10,7 +10,8 @@
   },
   "scripts": {
     "start": "yarn start:cowswap",
-    "start:cowswap": "cd apps/cowswap-frontend && yarn dev",
+    "start:cowswap": "cd apps/cowswap-frontend && yarn start",
+    "dev:cowswap": "cd apps/cowswap-frontend && yarn dev",
     "build": "yarn run build:cowswap",
     "build:cowswap": "cd apps/cowswap-frontend && yarn build",
     "start:backend": "cd apps/backend && node index.js",
