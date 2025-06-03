@@ -319,6 +319,7 @@ function AdminPage({ user }: any) {
     }
 
     fetchSettings()
+    return undefined
   }, [])
 
   // Function to handle rate limiting
@@ -381,7 +382,7 @@ function AdminPage({ user }: any) {
   }
 
   // Fetch transactions for a specific chain with rate limit handling
-  const fetchTransactions = async (chain: string) => {
+  const fetchTransactions = async (chain: string): Promise<void> => {
     setIsLoading(true)
     try {
       const endpoint = chain === 'all' ? '/api/v1/txs' : `/api/v1/txs/${chain}`
@@ -403,13 +404,14 @@ function AdminPage({ user }: any) {
       }
       setNotificationMessage('Failed to fetch transactions')
       setIsError(true)
+      return
     } finally {
       setIsLoading(false)
     }
   }
 
   // Fetch traders data with rate limit handling
-  const getTraders = async () => {
+  const getTraders = async (): Promise<void> => {
     try {
       const { data } = await http.get('/api/v1/traders', {
         headers: {
@@ -429,6 +431,7 @@ function AdminPage({ user }: any) {
       }
       setNotificationMessage('Failed to fetch traders data')
       setIsError(true)
+      return
     }
   }
 
@@ -462,6 +465,7 @@ function AdminPage({ user }: any) {
       const timer = setTimeout(() => setNotificationMessage(''), 3000)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [notificationMessage])
 
   // Function to redact long strings
@@ -1610,6 +1614,7 @@ const AdminLayout = () => {
     if (user === null) {
       getData()
     }
+    return undefined
   }, [user])
   const handleChange = (data: any) => {
     setUser(data)
@@ -1642,6 +1647,7 @@ const Login = ({ setLogin }: { setLogin: Function }) => {
       setEmail(savedEmail)
       setRememberMe(true)
     }
+    return undefined
   }, [])
 
   // Handle rate limiting
@@ -1662,6 +1668,7 @@ const Login = ({ setLogin }: { setLogin: Function }) => {
       }, 1000)
       return () => clearInterval(timer)
     }
+    return undefined
   }, [failedAttempts])
 
   const handleSubmit = async (e: React.FormEvent) => {
