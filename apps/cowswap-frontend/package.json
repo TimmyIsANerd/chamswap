@@ -32,5 +32,8 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "nx": {}
+  "nx": {},
+  "engines": {
+    "node": "22.16"
+  }
 }
