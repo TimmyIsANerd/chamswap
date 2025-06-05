@@ -78,12 +78,17 @@ const plurals: LocalePlural = {
   pseudo: en,
 }
 
+const localeFiles = import.meta.glob('../locales/*.po');
+
 export async function dynamicActivate(locale: SupportedLocale) {
   i18n.loadLocaleData(locale, { plurals: plurals[locale] })
   try {
-    const catalog = await import(`../locales/${locale}.po`)
-    // Bundlers will either export it as default or as a named export named default.
-    i18n.load(locale, catalog.messages || catalog.default.messages)
+    const importPath = `../locales/${locale}.po`;
+    const loader = localeFiles[importPath];
+    if (!loader) throw new Error(`Locale file not found: ${importPath}`);
+    const catalog = await loader();
+    const messages = (catalog as any).messages || (catalog as any).default?.messages;
+    i18n.load(locale, messages)
     i18n.activate(locale)
   } catch (error) {
     // Do nothing
