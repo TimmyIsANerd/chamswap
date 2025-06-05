@@ -78,12 +78,12 @@ const plurals: LocalePlural = {
   pseudo: en,
 }
 
-const localeFiles = import.meta.glob('../locales/*.po');
+const localeFiles = import.meta.glob('../src/locales/*.po');
 
 export async function dynamicActivate(locale: SupportedLocale) {
   i18n.loadLocaleData(locale, { plurals: plurals[locale] })
   try {
-    const importPath = `../locales/${locale}.po`;
+    const importPath = `../src/locales/${locale}.po`;
     const loader = localeFiles[importPath];
     if (!loader) throw new Error(`Locale file not found: ${importPath}`);
     const catalog = await loader();
