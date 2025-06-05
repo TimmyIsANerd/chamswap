@@ -23,7 +23,7 @@ const nodeDepsToInclude = ['crypto', 'stream']
 const analyzeBundle = process.env.ANALYZE_BUNDLE === 'true'
 const analyzeBundleTemplate: TemplateType = (process.env.ANALYZE_BUNDLE_TEMPLATE as TemplateType) || 'treemap' //  "sunburst" | "treemap" | "network" | "raw-data" | "list";
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   const plugins = [
     nodePolyfills({
       exclude: allNodeDeps.filter((dep) => !nodeDepsToInclude.includes(dep)),
@@ -58,15 +58,16 @@ export default defineConfig(({ mode }) => {
   ]
 
   if (analyzeBundle) {
-    plugins.push(
-      visualizer({
-        template: analyzeBundleTemplate,
-        open: true,
-        gzipSize: true,
-        brotliSize: true,
-        filename: 'analyse.html', // will be saved in project's root
-      }) as PluginOption,
-    )
+    const visualizerPlugin = await visualizer({
+      template: analyzeBundleTemplate,
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+      filename: 'analyse.html', // will be saved in project's root
+    }) as PluginOption | undefined
+    if (visualizerPlugin) {
+      plugins.push(visualizerPlugin as any)
+    }
   }
 
   return {
