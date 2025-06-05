@@ -7,8 +7,6 @@
 /src/locales/**/*.js
 /src/locales/**/*.ts
 /src/locales/**/*.json
-/src/locales/**/en-US.po
-/src/locales/**/pseudo.po
 
 # dependencies
 node_modules
