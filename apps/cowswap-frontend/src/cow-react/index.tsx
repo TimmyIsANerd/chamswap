@@ -14,7 +14,7 @@ import { LanguageProvider } from 'i18n'
 import { createRoot } from 'react-dom/client'
 import SvgCacheProvider from 'react-inlinesvg/provider'
 import { Provider } from 'react-redux'
-import { HashRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import * as serviceWorkerRegistration from 'serviceWorkerRegistration'
 import { ThemedGlobalStyle, ThemeProvider } from 'theme'
 
@@ -45,7 +45,7 @@ function Main() {
       <SvgCacheProvider>
         <Provider store={cowSwapStore}>
           <AtomProvider store={jotaiStore}>
-            <HashRouter>
+            <BrowserRouter>
               <LanguageProvider>
                 <Web3ProviderInstance>
                   <ThemeProvider>
@@ -64,7 +64,7 @@ function Main() {
                   </ThemeProvider>
                 </Web3ProviderInstance>
               </LanguageProvider>
-            </HashRouter>
+            </BrowserRouter>
           </AtomProvider>
         </Provider>
       </SvgCacheProvider>

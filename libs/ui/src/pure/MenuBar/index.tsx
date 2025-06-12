@@ -177,12 +177,17 @@ const NavItem = ({
     ? appendUtmParams(item.href!, item.utmSource, item.utmContent, rootDomain, item.external, item.label)
     : item.href
 
+  // Wrap the LinkComponent with onClick handler for regular links
+  const handleClick = (e: React.MouseEvent) => {
+    closeDropdown()
+  }
+
   return item.children ? (
     <GenericDropdown
       isOpen={openDropdown === item.label}
       item={item}
       onTrigger={handleToggle}
-      interaction="click" // Ensure it's 'click' for both mobile and desktop
+      interaction="click"
       mobileMode={mobileMode}
       isNavItemDropdown={true}
       closeDropdown={closeDropdown}
@@ -190,8 +195,11 @@ const NavItem = ({
       LinkComponent={LinkComponent}
     />
   ) : href ? (
-    <RootNavItem mobileMode={mobileMode}>
-      <LinkComponent href={href}>
+    <RootNavItem mobileMode={mobileMode}
+      onClick={handleClick}>
+      <LinkComponent
+        href={href}
+      >
         {item.label} {item.external && <span>&#8599;</span>}
       </LinkComponent>
     </RootNavItem>
@@ -408,12 +416,12 @@ const GenericDropdown: React.FC<DropdownProps> = ({
   const interactionProps = useMemo(() => {
     return interaction === 'hover'
       ? {
-          onMouseEnter: onTrigger,
-          onMouseLeave: onTrigger,
-        }
+        onMouseEnter: onTrigger,
+        onMouseLeave: onTrigger,
+      }
       : {
-          onClick: onTrigger,
-        }
+        onClick: onTrigger,
+      }
   }, [interaction, onTrigger])
 
   return (
