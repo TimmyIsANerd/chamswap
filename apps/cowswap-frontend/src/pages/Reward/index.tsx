@@ -202,7 +202,7 @@ export function RewardPage() {
   }
 
   const shareOnTwitter = () => {
-    const text = `Join me on @Chameleon and get rewarded for trading! Use my referral code: ${referralCode}`
+    const text = `Get 5% of my trading fees when you trade on @chameleon_swap! Use my referral code: ${referralCode}`
     const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`
     window.open(url, '_blank')
   }
