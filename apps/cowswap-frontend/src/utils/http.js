@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = 'https://chameleon-api-uvqo.onrender.com/'
+const baseURL = 'https://api.chameleon.exchange'
 
 const http = axios.create({
   baseURL,
