@@ -6,6 +6,10 @@
   "author": "",
   "license": "ISC",
   "scripts": {
+    "start": "vite preview",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "patch-package": "npx patch-package",
     "cosmos:clear": "rm -rf ./public/cosmos",
     "cosmos:run": "yarn run _cosmos:run",
@@ -29,5 +33,8 @@
   },
   "dependencies": {},
   "devDependencies": {},
-  "nx": {}
+  "nx": {},
+  "engines": {
+    "node": "22.x"
+  }
 }

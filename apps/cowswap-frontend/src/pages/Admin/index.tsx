@@ -113,6 +113,7 @@ interface DashboardStats {
   txs: Transaction[]
   traders: Trader[]
   noOfTraders: number
+  testnetTradingVolume: number
   totalTradingVolume: number
   totalReferalTradingVolume: number
   totalPoints: number
@@ -120,6 +121,7 @@ interface DashboardStats {
   totalTradingVolumeEthereum: number
   totalTradingVolumeArbitrumOne: number
   totalTradingVolumeGenosis: number
+  totalTradingVolumeSepolia: number
 }
 
 const theme = createTheme({
@@ -319,6 +321,7 @@ function AdminPage({ user }: any) {
     }
 
     fetchSettings()
+    return undefined
   }, [])
 
   // Function to handle rate limiting
@@ -381,7 +384,7 @@ function AdminPage({ user }: any) {
   }
 
   // Fetch transactions for a specific chain with rate limit handling
-  const fetchTransactions = async (chain: string) => {
+  const fetchTransactions = async (chain: string): Promise<void> => {
     setIsLoading(true)
     try {
       const endpoint = chain === 'all' ? '/api/v1/txs' : `/api/v1/txs/${chain}`
@@ -403,13 +406,14 @@ function AdminPage({ user }: any) {
       }
       setNotificationMessage('Failed to fetch transactions')
       setIsError(true)
+      return
     } finally {
       setIsLoading(false)
     }
   }
 
   // Fetch traders data with rate limit handling
-  const getTraders = async () => {
+  const getTraders = async (): Promise<void> => {
     try {
       const { data } = await http.get('/api/v1/traders', {
         headers: {
@@ -429,6 +433,7 @@ function AdminPage({ user }: any) {
       }
       setNotificationMessage('Failed to fetch traders data')
       setIsError(true)
+      return
     }
   }
 
@@ -462,6 +467,7 @@ function AdminPage({ user }: any) {
       const timer = setTimeout(() => setNotificationMessage(''), 3000)
       return () => clearTimeout(timer)
     }
+    return undefined
   }, [notificationMessage])
 
   // Function to redact long strings
@@ -954,8 +960,8 @@ function AdminPage({ user }: any) {
                       <Typography variant="subtitle2" color="text.secondary" gutterBottom>
                         Trading Volume by Chain
                       </Typography>
-                      <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6} md={3}>
+                      <Grid container spacing={2} justifyContent="center">
+                        <Grid item xs={12} sm={6} md={2}>
                           <Box sx={{ textAlign: 'center' }}>
                             <Typography variant="body2" color="text.secondary">
                               Base
@@ -963,7 +969,7 @@ function AdminPage({ user }: any) {
                             <Typography variant="h6">${stats?.totalTradingVolumeBase.toLocaleString() || 0}</Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={2}>
                           <Box sx={{ textAlign: 'center' }}>
                             <Typography variant="body2" color="text.secondary">
                               Ethereum
@@ -973,7 +979,7 @@ function AdminPage({ user }: any) {
                             </Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={2}>
                           <Box sx={{ textAlign: 'center' }}>
                             <Typography variant="body2" color="text.secondary">
                               Arbitrum One
@@ -983,13 +989,23 @@ function AdminPage({ user }: any) {
                             </Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={2}>
                           <Box sx={{ textAlign: 'center' }}>
                             <Typography variant="body2" color="text.secondary">
                               Gnosis
                             </Typography>
                             <Typography variant="h6">
                               ${stats?.totalTradingVolumeGenosis.toLocaleString() || 0}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={2}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="body2" color="text.secondary">
+                              Sepolia
+                            </Typography>
+                            <Typography variant="h6">
+                              ${stats?.totalTradingVolumeSepolia.toLocaleString() || 0}
                             </Typography>
                           </Box>
                         </Grid>
@@ -1610,6 +1626,7 @@ const AdminLayout = () => {
     if (user === null) {
       getData()
     }
+    return undefined
   }, [user])
   const handleChange = (data: any) => {
     setUser(data)
@@ -1642,6 +1659,7 @@ const Login = ({ setLogin }: { setLogin: Function }) => {
       setEmail(savedEmail)
       setRememberMe(true)
     }
+    return undefined
   }, [])
 
   // Handle rate limiting
@@ -1662,6 +1680,7 @@ const Login = ({ setLogin }: { setLogin: Function }) => {
       }, 1000)
       return () => clearInterval(timer)
     }
+    return undefined
   }, [failedAttempts])
 
   const handleSubmit = async (e: React.FormEvent) => {

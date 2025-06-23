@@ -1,0 +1,786 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-06-02 09:30+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en-US\n"
+
+#: apps/cowswap-frontend/src/modules/account/containers/AccountDetails/index.tsx
+msgid "Disconnect"
+msgstr "Disconnect"
+
+#: apps/cowswap-frontend/src/legacy/components/Header/ChainConnectivityWarning.tsx
+msgid "You may have lost your network connection, or {label} might be down right now."
+msgstr "You may have lost your network connection, or {label} might be down right now."
+
+#: apps/cowswap-frontend/src/legacy/components/Tokens/FiatBalanceCell.tsx
+msgid "Value may be zero due to missing token price information"
+msgstr "Value may be zero due to missing token price information"
+
+#: apps/cowswap-frontend/src/modules/limitOrders/pure/DeadlineSelector/index.tsx
+msgid "Order expires in"
+msgstr "Order expires in"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "How It Works"
+msgstr "How It Works"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/EthFlow/EthFlowModalContent/EthFlowModalTopContent.tsx
+msgid "At current gas prices, your remaining {nativeSymbol} balance after confirmation may be {0}"
+msgstr "At current gas prices, your remaining {nativeSymbol} balance after confirmation may be {0}"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Learn more about the reward program"
+msgstr "Learn more about the reward program"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Buying {0} with smart contract wallets is not currently supported"
+msgstr "Buying {0} with smart contract wallets is not currently supported"
+
+#: apps/cowswap-frontend/src/modules/wallet/pure/WalletModal/index.tsx
+msgid "By connecting a wallet, you acknowledge that you have read, understood and agree to the interface’s <0>Terms & Conditions</0>."
+msgstr "By connecting a wallet, you acknowledge that you have read, understood and agree to the interface’s <0>Terms & Conditions</0>."
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/tradeButtonsMap.tsx
+msgid "Selling {0} is not supported"
+msgstr "Selling {0} is not supported"
+
+#: apps/cowswap-frontend/src/common/pure/TransactionErrorContent/index.tsx
+msgid "Dismiss"
+msgstr "Dismiss"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/ReceiveAmountInfo/index.tsx
+#: apps/cowswap-frontend/src/modules/swap/pure/ReceiveAmountInfo/index.tsx
+msgid "Free"
+msgstr "Free"
+
+#: apps/cowswap-frontend/src/modules/account/pure/ConnectedAccountBlocked/index.tsx
+msgid "Blocked Address"
+msgstr "Blocked Address"
+
+#: apps/cowswap-frontend/src/modules/trade/pure/TradeWarning/index.tsx
+msgid "{acceptLabel}"
+msgstr "{acceptLabel}"
+
+#: apps/cowswap-frontend/src/pages/Account/Tokens/TokensOverview.tsx
+msgid "Name, symbol or address"
+msgstr "Name, symbol or address"
+
+#: apps/cowswap-frontend/src/legacy/components/AddressInputPanel/index.tsx
+msgid "(View on Explorer)"
+msgstr "(View on Explorer)"
+
+#: apps/cowswap-frontend/src/modules/wallet/pure/PendingView/index.tsx
+msgid "The connection attempt failed. Please click try again and follow the steps to connect in your wallet."
+msgstr "The connection attempt failed. Please click try again and follow the steps to connect in your wallet."
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Unsupported Token"
+msgstr "Unsupported Token"
+
+#: apps/cowswap-frontend/src/legacy/components/swap/UnsupportedCurrencyFooter/UnsupportedCurrencyFooterMod.tsx
+msgid "{detailsText}"
+msgstr "{detailsText}"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/SettingsTab/index.tsx
+msgid "Enable Hooks"
+msgstr "Enable Hooks"
+
+#: apps/cowswap-frontend/src/legacy/components/Copy/CopyMod.tsx
+#: apps/cowswap-frontend/src/modules/account/containers/CopyHelper/index.tsx
+msgid "Copied"
+msgstr "Copied"
+
+#: apps/cowswap-frontend/src/modules/wallet/containers/AccountSelectorModal/index.tsx
+msgid "Select {walletName} Account"
+msgstr "Select {walletName} Account"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Connect your wallet to access rewards"
+msgstr "Connect your wallet to access rewards"
+
+#: apps/cowswap-frontend/src/common/pure/NetworksList/index.tsx
+msgid "CoW Protocol Explorer"
+msgstr "CoW Protocol Explorer"
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "The transaction could not be sent because the deadline has passed. Please check that your transaction deadline is not too low."
+msgstr "The transaction could not be sent because the deadline has passed. Please check that your transaction deadline is not too low."
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/tradeButtonsMap.tsx
+msgid "Unsupported token"
+msgstr "Unsupported token"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Generate your unique referral code"
+msgstr "Generate your unique referral code"
+
+#: apps/cowswap-frontend/src/modules/limitOrders/pure/DeadlineSelector/index.tsx
+msgid "Custom"
+msgstr "Custom"
+
+#: apps/cowswap-frontend/src/legacy/components/ErrorBoundary/ErrorWithStackTrace.tsx
+msgid "Create an issue on GitHub"
+msgstr "Create an issue on GitHub"
+
+#: apps/cowswap-frontend/src/modules/fortune/containers/FortuneWidget/index.tsx
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Share on Twitter"
+msgstr "Share on Twitter"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/SettingsTab/index.tsx
+msgid "Allows you to choose a destination address for the swap other than the connected one."
+msgstr "Allows you to choose a destination address for the swap other than the connected one."
+
+#: apps/cowswap-frontend/src/common/pure/NetworksList/index.tsx
+msgid "Help Center"
+msgstr "Help Center"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Market price"
+msgstr "Market price"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/SettingsTab/index.tsx
+msgid "<0><1/> Experimental:</0> Add DeFI interactions before and after your trade"
+msgstr "<0><1/> Experimental:</0> Add DeFI interactions before and after your trade"
+
+#: apps/cowswap-frontend/src/modules/swap/hooks/useSwapState.tsx
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/tradeButtonsMap.tsx
+msgid "Connect Wallet"
+msgstr "Connect Wallet"
+
+#: apps/cowswap-frontend/src/legacy/components/Badge/RangeBadge.tsx
+msgid "Closed"
+msgstr "Closed"
+
+#: apps/cowswap-frontend/src/modules/twap/pure/CustomDeadlineSelector/index.tsx
+msgid "Apply"
+msgstr "Apply"
+
+#: apps/cowswap-frontend/src/modules/trade/pure/PriceUpdatedBanner/index.tsx
+msgid "Price Updated"
+msgstr "Price Updated"
+
+#: apps/cowswap-frontend/src/common/pure/ConfirmationModal/ConfirmationModal.tsx
+#: apps/cowswap-frontend/src/modules/swap/pure/EthFlow/EthFlowModalContent/EthFlowModalTopContent.tsx
+msgid "{description}"
+msgstr "{description}"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+msgid "Chameleaon swap has dynamically selected this slippage amount to account for current gas prices and trade size. Changes may result in slower execution."
+msgstr "Chameleaon swap has dynamically selected this slippage amount to account for current gas prices and trade size. Changes may result in slower execution."
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Copy Link"
+msgstr "Copy Link"
+
+#: apps/cowswap-frontend/src/legacy/components/AddressInputPanel/index.tsx
+msgid "Wallet Address or ENS name"
+msgstr "Wallet Address or ENS name"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Trading Volume"
+msgstr "Trading Volume"
+
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/tradeButtonsMap.tsx
+msgid "Approve <0/> and {0}"
+msgstr "Approve <0/> and {0}"
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance."
+msgstr "This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance."
+
+#: apps/cowswap-frontend/src/common/pure/ApproveButton/index.tsx
+msgid "Allow Chameleaon swap to use your <0/>"
+msgstr "Allow Chameleaon swap to use your <0/>"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/index.tsx
+msgid "Time to create a new one!"
+msgstr "Time to create a new one!"
+
+#: apps/cowswap-frontend/src/modules/limitOrders/pure/DeadlineSelector/index.tsx
+msgid "Set custom deadline"
+msgstr "Set custom deadline"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/index.tsx
+#: apps/cowswap-frontend/src/modules/wallet/pure/WalletModal/index.tsx
+msgid "Connect a wallet"
+msgstr "Connect a wallet"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+msgid "minutes"
+msgstr "minutes"
+
+#: apps/cowswap-frontend/src/legacy/components/Tokens/TokensTable.tsx
+msgid "Balance {0}"
+msgstr "Balance {0}"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Error loading price. Try again later."
+msgstr "Error loading price. Try again later."
+
+#: apps/cowswap-frontend/src/legacy/components/AddressInputPanel/index.tsx
+msgid "Recipient"
+msgstr "Recipient"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Please connect your wallet to view your rewards and generate a referral code."
+msgstr "Please connect your wallet to view your rewards and generate a referral code."
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+msgid "Swap deadline"
+msgstr "Swap deadline"
+
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/tradeButtonsMap.tsx
+msgid "Insufficient <0/> balance"
+msgstr "Insufficient <0/> balance"
+
+#: apps/cowswap-frontend/src/legacy/components/Badge/RangeBadge.tsx
+msgid "The price of this pool is outside of your selected range. Your position is not currently earning fees."
+msgstr "The price of this pool is outside of your selected range. Your position is not currently earning fees."
+
+#: apps/cowswap-frontend/src/common/utils/tradeSettingsTooltips.tsx
+#: apps/cowswap-frontend/src/legacy/components/Tokens/TokensTable.tsx
+#: apps/cowswap-frontend/src/modules/limitOrders/containers/TradeButtons/index.tsx
+#: apps/cowswap-frontend/src/modules/limitOrders/pure/DeadlineSelector/index.tsx
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/index.tsx
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/OrdersTabs.tsx
+#: apps/cowswap-frontend/src/modules/swap/pure/EthFlow/EthFlowBanner/index.tsx
+#: apps/cowswap-frontend/src/modules/swap/pure/ReceiveAmount/index.tsx
+#: apps/cowswap-frontend/src/modules/swap/pure/ReceiveAmountInfo/index.tsx
+#: apps/cowswap-frontend/src/modules/trade/containers/TradeWidgetLinks/index.tsx
+#: apps/cowswap-frontend/src/modules/trade/containers/TradeWidgetLinks/index.tsx
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/index.tsx
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/tradeButtonsMap.tsx
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/tradeButtonsMap.tsx
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormButtons/tradeButtonsMap.tsx
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/pure/Row/RowSlippageContent/index.tsx
+#: apps/cowswap-frontend/src/modules/yield/containers/TradeButtons/index.tsx
+#: apps/cowswap-frontend/src/pages/Account/Tokens/TokensOverview.tsx
+msgid "{0}"
+msgstr "{0}"
+
+#: apps/cowswap-frontend/src/common/pure/NetworksList/index.tsx
+msgid "Bridge"
+msgstr "Bridge"
+
+#: apps/cowswap-frontend/src/modules/wallet/pure/PendingView/index.tsx
+msgid "Connecting..."
+msgstr "Connecting..."
+
+#: apps/cowswap-frontend/src/modules/wallet/pure/PendingView/index.tsx
+msgid "Error connecting"
+msgstr "Error connecting"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Total Referrals"
+msgstr "Total Referrals"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/index.tsx
+msgid "To use {orderType} orders, please connect your wallet <0/>to one of our supported networks."
+msgstr "To use {orderType} orders, please connect your wallet <0/>to one of our supported networks."
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/SettingsTab/index.tsx
+msgid "Transaction Settings"
+msgstr "Transaction Settings"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+msgid "Enter slippage percentage between {0}% and {1}%"
+msgstr "Enter slippage percentage between {0}% and {1}%"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Expiration"
+msgstr "Expiration"
+
+#: apps/cowswap-frontend/src/legacy/components/Header/Polling.tsx
+msgid "The most recent block number on this network. Prices update on every block."
+msgstr "The most recent block number on this network. Prices update on every block."
+
+#: apps/cowswap-frontend/src/legacy/components/Badge/RangeBadge.tsx
+msgid "Your position has 0 liquidity, and is not earning fees."
+msgstr "Your position has 0 liquidity, and is not earning fees."
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "The input token cannot be transferred. There may be an issue with the input token."
+msgstr "The input token cannot be transferred. There may be an issue with the input token."
+
+#: apps/cowswap-frontend/src/modules/wallet/pure/Web3StatusInner/index.tsx
+msgid "{pendingCount} Pending"
+msgstr "{pendingCount} Pending"
+
+#: apps/cowswap-frontend/src/modules/limitOrders/pure/DeadlineSelector/index.tsx
+msgid "Choose a custom deadline for your limit order:"
+msgstr "Choose a custom deadline for your limit order:"
+
+#: apps/cowswap-frontend/src/common/pure/ApproveButton/index.tsx
+msgid "You can now trade <0/>"
+msgstr "You can now trade <0/>"
+
+#: apps/cowswap-frontend/src/legacy/components/Header/Polling.tsx
+msgid "The current fast gas amount for sending a transaction on L1. Gas fees are paid in Ethereum's native currency Ether (ETH) and denominated in GWEI."
+msgstr "The current fast gas amount for sending a transaction on L1. Gas fees are paid in Ethereum's native currency Ether (ETH) and denominated in GWEI."
+
+#: apps/cowswap-frontend/src/modules/swap/pure/ReceiveAmountInfo/index.tsx
+msgid "Fee"
+msgstr "Fee"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Invite friends to trade on Chameleon and earn points together!"
+msgstr "Invite friends to trade on Chameleon and earn points together!"
+
+#: apps/cowswap-frontend/src/common/utils/tradeSettingsTooltips.tsx
+msgid "Your swap expires and will not execute if it is pending for longer than the selected duration.<0/><1/>{INPUT_OUTPUT_EXPLANATION}"
+msgstr "Your swap expires and will not execute if it is pending for longer than the selected duration.<0/><1/>{INPUT_OUTPUT_EXPLANATION}"
+
+#: apps/cowswap-frontend/src/legacy/components/ErrorBoundary/ChunkLoadError.tsx
+msgid "This page can't be reached"
+msgstr "This page can't be reached"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+msgid "Auto"
+msgstr "Auto"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/SettingsTab/index.tsx
+msgid "Interface Settings"
+msgstr "Interface Settings"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Creation time"
+msgstr "Creation time"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Share Your Referral Code"
+msgstr "Share Your Referral Code"
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "Unknown error{0}. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+msgstr "Unknown error{0}. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+
+#: apps/cowswap-frontend/src/legacy/components/ErrorBoundary/ChunkLoadError.tsx
+#: apps/cowswap-frontend/src/legacy/components/ErrorBoundary/ErrorWithStackTrace.tsx
+msgid "Get support on Discord"
+msgstr "Get support on Discord"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Earn points when your referrals trade on Chameleon Swap"
+msgstr "Earn points when your referrals trade on Chameleon Swap"
+
+#: apps/cowswap-frontend/src/modules/account/containers/AccountDetails/index.tsx
+msgid "Connected with"
+msgstr "Connected with"
+
+#: apps/cowswap-frontend/src/legacy/components/NetworkAlert/NetworkAlert.tsx
+msgid "Deposit tokens to the {label} network."
+msgstr "Deposit tokens to the {label} network."
+
+#: apps/cowswap-frontend/src/common/pure/TransactionErrorContent/index.tsx
+msgid "Error"
+msgstr "Error"
+
+#: apps/cowswap-frontend/src/common/pure/CurrencySelectButton/index.tsx
+#: apps/cowswap-frontend/src/modules/swap/hooks/useSwapState.tsx
+msgid "Select a token"
+msgstr "Select a token"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Redeem your points for exclusive rewards"
+msgstr "Redeem your points for exclusive rewards"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Wrap <0/> and Swap"
+msgstr "Wrap <0/> and Swap"
+
+#: apps/cowswap-frontend/src/modules/limitOrders/pure/DeadlineSelector/index.tsx
+msgid "Set custom date"
+msgstr "Set custom date"
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+msgstr "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+
+#: apps/cowswap-frontend/src/modules/account/pure/ConnectedAccountBlocked/index.tsx
+msgid "blocked activities"
+msgstr "blocked activities"
+
+#: apps/cowswap-frontend/src/modules/trade/hooks/setupTradeState/useResetStateWithSymbolDuplication.ts
+msgid ""
+"There is more than one token in the list of tokens with the symbol: {doubledSymbol}.\n"
+"Please select the token you need from the UI or use the address of the token instead of the symbol"
+msgstr ""
+"There is more than one token in the list of tokens with the symbol: {doubledSymbol}.\n"
+"Please select the token you need from the UI or use the address of the token instead of the symbol"
+
+#: apps/cowswap-frontend/src/common/pure/OrderSubmittedContent/index.tsx
+msgid "Order Submitted"
+msgstr "Order Submitted"
+
+#: apps/cowswap-frontend/src/modules/wallet/pure/Web3StatusInner/index.tsx
+msgid "Connect wallet"
+msgstr "Connect wallet"
+
+#: apps/cowswap-frontend/src/modules/tradeFormValidation/pure/TradeFormBlankButton/index.tsx
+msgid "{children}"
+msgstr "{children}"
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+msgstr "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+
+#: apps/cowswap-frontend/src/common/pure/ConfirmationPendingContent/ConfirmationPendingContent.tsx
+msgid "Sign the {operationLabel} with your wallet. {0}"
+msgstr "Sign the {operationLabel} with your wallet. {0}"
+
+#: apps/cowswap-frontend/src/common/pure/NetworksList/index.tsx
+msgid "{explorerTitle}"
+msgstr "{explorerTitle}"
+
+#: apps/cowswap-frontend/src/common/hooks/useUnsupportedNetworksText.tsx
+msgid "Please connect your wallet to one of our supported networks:<0/>{0}"
+msgstr "Please connect your wallet to one of our supported networks:<0/>{0}"
+
+#: apps/cowswap-frontend/src/legacy/components/Header/Polling.tsx
+msgid "gwei"
+msgstr "gwei"
+
+#: apps/cowswap-frontend/src/modules/account/pure/ConnectedAccountBlocked/index.tsx
+msgid "If you believe this is an error, please send an email including your address to"
+msgstr "If you believe this is an error, please send an email including your address to"
+
+#: apps/cowswap-frontend/src/modules/twap/pure/CustomDeadlineSelector/index.tsx
+msgid "Define custom total time"
+msgstr "Define custom total time"
+
+#: apps/cowswap-frontend/src/modules/swap/hooks/useSwapState.tsx
+msgid "Couldn't load balances"
+msgstr "Couldn't load balances"
+
+#: apps/cowswap-frontend/src/common/utils/tradeSettingsTooltips.tsx
+msgid "{0} orders require a minimum transaction expiration time threshold of {1} minutes to ensure the best swapping experience.<0/><1/>Orders not matched after the threshold time are automatically refunded."
+msgstr "{0} orders require a minimum transaction expiration time threshold of {1} minutes to ensure the best swapping experience.<0/><1/>Orders not matched after the threshold time are automatically refunded."
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/SettingsTab/index.tsx
+msgid "Custom Recipient"
+msgstr "Custom Recipient"
+
+#: apps/cowswap-frontend/src/common/pure/ApproveButton/index.tsx
+msgid "You must give the CoW Protocol smart contracts permission to use your <0/>. If you approve the default amount, you will only have to do this once per token."
+msgstr "You must give the CoW Protocol smart contracts permission to use your <0/>. If you approve the default amount, you will only have to do this once per token."
+
+#: apps/cowswap-frontend/src/legacy/components/Tokens/TokensTable.tsx
+msgid "Token {0}"
+msgstr "Token {0}"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Swap with {0}"
+msgstr "Swap with {0}"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Your Points"
+msgstr "Your Points"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Execution time"
+msgstr "Execution time"
+
+#: apps/cowswap-frontend/src/modules/trade/pure/Settings/SettingsBox.tsx
+msgid "{tooltip}"
+msgstr "{tooltip}"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+msgid "High slippage amount selected"
+msgstr "High slippage amount selected"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/pure/Row/RowDeadline/index.tsx
+msgid "Transaction expiration"
+msgstr "Transaction expiration"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+msgid "Your transaction may expire"
+msgstr "Your transaction may expire"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Wallet Unsupported"
+msgstr "Wallet Unsupported"
+
+#: apps/cowswap-frontend/src/legacy/components/Badge/RangeBadge.tsx
+msgid "The price of this pool is within your selected range. Your position is currently earning fees."
+msgstr "The price of this pool is within your selected range. Your position is currently earning fees."
+
+#: apps/cowswap-frontend/src/modules/swap/pure/EthFlow/EthFlowModalContent/EthFlowModalBottomContent.tsx
+#: apps/cowswap-frontend/src/modules/trade/pure/TradeConfirmation/index.tsx
+msgid "{buttonText}"
+msgstr "{buttonText}"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/ReceiveAmountInfo/index.tsx
+msgid "Network costs"
+msgstr "Network costs"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Fills at"
+msgstr "Fills at"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Chameleon Rewards & Referrals"
+msgstr "Chameleon Rewards & Referrals"
+
+#: apps/cowswap-frontend/src/modules/twap/pure/CustomDeadlineSelector/index.tsx
+msgid "Cancel"
+msgstr "Cancel"
+
+#: apps/cowswap-frontend/src/common/utils/tradeSettingsTooltips.tsx
+msgid "When selling {0}, the minimum slippage tolerance is set to {1}% to ensure a high likelihood of order matching, even in volatile market conditions.<0/><1/>{2} orders can, in rare cases, be frontrun due to their on-chain component. For more robust MEV protection, consider wrapping your {3} before trading."
+msgstr "When selling {0}, the minimum slippage tolerance is set to {1}% to ensure a high likelihood of order matching, even in volatile market conditions.<0/><1/>{2} orders can, in rare cases, be frontrun due to their on-chain component. For more robust MEV protection, consider wrapping your {3} before trading."
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Sell → Buy"
+msgstr "Sell → Buy"
+
+#: apps/cowswap-frontend/src/common/pure/ConfirmationPendingContent/ConfirmationPendingContent.tsx
+msgid "Follow these steps:"
+msgstr "Follow these steps:"
+
+#: apps/cowswap-frontend/src/modules/wallet/pure/PendingView/index.tsx
+msgid "Back to wallet selection"
+msgstr "Back to wallet selection"
+
+#: apps/cowswap-frontend/src/common/pure/ConfirmationModal/ConfirmationModal.cosmos.tsx
+msgid "Turn on Expert mode?"
+msgstr "Turn on Expert mode?"
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "The Uniswap invariant x*y=k was not satisfied by the swap. This usually means one of the tokens you are swapping incorporates custom behavior on transfer."
+msgstr "The Uniswap invariant x*y=k was not satisfied by the swap. This usually means one of the tokens you are swapping incorporates custom behavior on transfer."
+
+#: apps/cowswap-frontend/src/modules/trade/pure/PriceUpdatedBanner/index.tsx
+msgid "Accept"
+msgstr "Accept"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Quote expired. Refreshing..."
+msgstr "Quote expired. Refreshing..."
+
+#: apps/cowswap-frontend/src/modules/limitOrders/pure/DeadlineSelector/index.tsx
+msgid "{error}"
+msgstr "{error}"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Error loading price. You are currently offline."
+msgstr "Error loading price. You are currently offline."
+
+#: apps/cowswap-frontend/src/modules/account/pure/ConnectedAccountBlocked/index.tsx
+msgid "This address is blocked on the Uniswap Labs interface because it is associated with one or more"
+msgstr "This address is blocked on the Uniswap Labs interface because it is associated with one or more"
+
+#: apps/cowswap-frontend/src/legacy/components/Badge/RangeBadge.tsx
+msgid "Out of range"
+msgstr "Out of range"
+
+#: apps/cowswap-frontend/src/modules/swap/hooks/useSwapState.tsx
+msgid "Enter an amount"
+msgstr "Enter an amount"
+
+#: apps/cowswap-frontend/src/legacy/components/Header/NetworkSelector/index.tsx
+msgid "Select a network"
+msgstr "Select a network"
+
+#: apps/cowswap-frontend/src/legacy/components/Header/ChainConnectivityWarning.tsx
+msgid "You may have lost your network connection."
+msgstr "You may have lost your network connection."
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Invalid price. Try increasing input/output amount."
+msgstr "Invalid price. Try increasing input/output amount."
+
+#: apps/cowswap-frontend/src/legacy/components/swap/UnsupportedCurrencyFooter/UnsupportedCurrencyFooterMod.tsx
+msgid "{showDetailsText}"
+msgstr "{showDetailsText}"
+
+#: apps/cowswap-frontend/src/modules/trade/containers/TradeWidget/TradeWidgetForm.tsx
+msgid "You cannot edit this field when selling {0}"
+msgstr "You cannot edit this field when selling {0}"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Execution price"
+msgstr "Execution price"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Creation"
+msgstr "Creation"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/index.tsx
+msgid "You don't have any {0} orders at the moment."
+msgstr "You don't have any {0} orders at the moment."
+
+#: apps/cowswap-frontend/src/modules/swap/hooks/useSwapState.tsx
+msgid "Invalid recipient"
+msgstr "Invalid recipient"
+
+#: apps/cowswap-frontend/src/pages/Account/LockedGnoVesting/index.tsx
+msgid "Successfully claimed"
+msgstr "Successfully claimed"
+
+#: apps/cowswap-frontend/src/modules/swap/hooks/useSwapState.tsx
+msgid "Insufficient {0} balance"
+msgstr "Insufficient {0} balance"
+
+#: apps/cowswap-frontend/src/legacy/components/Header/ChainConnectivityWarning.tsx
+msgid "Network Warning"
+msgstr "Network Warning"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Approve <0/> and Swap"
+msgstr "Approve <0/> and Swap"
+
+#: apps/cowswap-frontend/src/pages/Account/Balances.tsx
+msgid "Total vCHM balance"
+msgstr "Total vCHM balance"
+
+#: apps/cowswap-frontend/src/legacy/components/ErrorBoundary/ErrorWithStackTrace.tsx
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+#: apps/cowswap-frontend/src/common/pure/ConfirmationModal/ConfirmationModal.tsx
+#: apps/cowswap-frontend/src/legacy/components/CowBalance/index.tsx
+#: apps/cowswap-frontend/src/modules/trade/pure/Settings/SettingsBox.tsx
+msgid "{title}"
+msgstr "{title}"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/SafeReadOnlyButton.tsx
+msgid "Connect signer"
+msgstr "Connect signer"
+
+#: apps/cowswap-frontend/src/modules/wallet/pure/PendingView/index.tsx
+msgid "Try Again"
+msgstr "Try Again"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Limit price"
+msgstr "Limit price"
+
+#: apps/cowswap-frontend/src/common/pure/PriceImpactIndicator/index.tsx
+msgid "Price impact due to current liquidity levels"
+msgstr "Price impact due to current liquidity levels"
+
+#: apps/cowswap-frontend/src/modules/tradeWidgetAddons/containers/TransactionSettings/index.tsx
+msgid "MEV-protected slippage"
+msgstr "MEV-protected slippage"
+
+#: apps/cowswap-frontend/src/common/pure/ConfirmationModal/ConfirmationModal.tsx
+msgid "{warning}"
+msgstr "{warning}"
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "The output token cannot be transferred. There may be an issue with the output token."
+msgstr "The output token cannot be transferred. There may be an issue with the output token."
+
+#: apps/cowswap-frontend/src/pages/Account/Tokens/TokensOverview.tsx
+msgid "Reset favorites"
+msgstr "Reset favorites"
+
+#: apps/cowswap-frontend/src/common/pure/ConfirmationModal/ConfirmationModal.tsx
+msgid "{callToAction}"
+msgstr "{callToAction}"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/ReceiveAmountInfo/index.tsx
+msgid "Before costs"
+msgstr "Before costs"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Insufficient liquidity for this trade."
+msgstr "Insufficient liquidity for this trade."
+
+#: apps/cowswap-frontend/src/legacy/components/swap/UnsupportedCurrencyFooter/UnsupportedCurrencyFooterMod.tsx
+msgid "{detailsTitle}"
+msgstr "{detailsTitle}"
+
+#: apps/cowswap-frontend/src/legacy/components/ErrorBoundary/ChunkLoadError.tsx
+msgid "Reload page"
+msgstr "Reload page"
+
+#: apps/cowswap-frontend/src/modules/swap/hooks/useSwapState.tsx
+msgid "Enter a valid recipient"
+msgstr "Enter a valid recipient"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/EthFlow/EthFlowBanner/index.tsx
+msgid "<0>{0} This way, you'll take advantage of:</0><1><2>Lower overall network costs</2><3>Lower default slippage (instead of {1}% minimum)</3><4>No fees for failed transactions</4></1>{2}"
+msgstr "<0>{0} This way, you'll take advantage of:</0><1><2>Lower overall network costs</2><3>Lower default slippage (instead of {1}% minimum)</3><4>No fees for failed transactions</4></1>{2}"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Status"
+msgstr "Status"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Generate Referral Code"
+msgstr "Generate Referral Code"
+
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+#: apps/cowswap-frontend/src/modules/swap/pure/SwapButtons/index.tsx
+msgid "Swap"
+msgstr "Swap"
+
+#: apps/cowswap-frontend/src/legacy/components/Badge/RangeBadge.tsx
+msgid "In range"
+msgstr "In range"
+
+#: apps/cowswap-frontend/src/common/pure/RateInfo/index.tsx
+#: apps/cowswap-frontend/src/modules/trade/pure/TradeWidgetField/index.tsx
+#: apps/cowswap-frontend/src/modules/twap/containers/AmountParts/index.tsx
+msgid "{label}"
+msgstr "{label}"
+
+#: apps/cowswap-frontend/src/modules/wallet/containers/AccountSelectorModal/index.tsx
+msgid "{walletName} account changed"
+msgstr "{walletName} account changed"
+
+#: apps/cowswap-frontend/src/pages/Reward/index.tsx
+msgid "Share it with friends and community"
+msgstr "Share it with friends and community"
+
+#: apps/cowswap-frontend/src/common/pure/OrderSubmittedContent/index.tsx
+msgid "Continue"
+msgstr "Continue"
+
+#: libs/common-utils/src/swapErrorToUserReadableMessage.tsx
+msgid "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+msgstr "An error occurred when trying to execute this swap. You may need to increase your slippage tolerance. If that does not work, there may be an incompatibility with the token you are trading. Note: fee on transfer and rebase tokens are incompatible with Uniswap V3."
+
+#: apps/cowswap-frontend/src/common/pure/PoweredFooter/index.tsx
+msgid "Powered by CoW Protocol"
+msgstr "Powered by CoW Protocol"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/index.tsx
+msgid "Try adjusting your search term or clearing the filter"
+msgstr "Try adjusting your search term or clearing the filter"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Distance to market"
+msgstr "Distance to market"
+
+#: apps/cowswap-frontend/src/legacy/components/NetworkAlert/NetworkAlert.tsx
+msgid "{label} token bridge"
+msgstr "{label} token bridge"
+
+#: apps/cowswap-frontend/src/common/hooks/useConfirmationRequest.ts
+msgid "confirm"
+msgstr "confirm"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/index.tsx
+msgid "Use the <0/> to see {0}"
+msgstr "Use the <0/> to see {0}"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/tableHeaders.tsx
+msgid "Filled"
+msgstr "Filled"
+
+#: apps/cowswap-frontend/src/modules/ordersTable/pure/OrdersTableContainer/index.tsx
+msgid "Learn more"
+msgstr "Learn more"

@@ -70,7 +70,15 @@ export function ReferralPopup({ referralCode, onClose }: ReferralPopupProps) {
         }
       } catch (err) {
         console.error('[ReferralPopup] Failed to connect wallet:', err)
-        setRegistrationError(err.message || 'Failed to register referral')
+        let errorMsg = 'Failed to register referral'
+        if (err && typeof err === 'object') {
+          if ('message' in err && typeof (err as any).message === 'string') {
+            errorMsg = (err as any).message
+          } else if ('response' in err && (err as any).response?.data?.message) {
+            errorMsg = (err as any).response.data.message
+          }
+        }
+        setRegistrationError(errorMsg)
       }
     } finally {
       setIsRegistering(false)
@@ -110,6 +118,8 @@ export function ReferralPopup({ referralCode, onClose }: ReferralPopupProps) {
 
       return () => clearTimeout(timer)
     }
+
+    return
   }, [registrationComplete, isWalletConnected, onClose])
 
   return (

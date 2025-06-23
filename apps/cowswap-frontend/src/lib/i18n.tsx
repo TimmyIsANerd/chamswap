@@ -5,36 +5,8 @@ import { DEFAULT_LOCALE, SupportedLocale } from '@cowprotocol/common-const'
 import { i18n } from '@lingui/core'
 import { I18nProvider } from '@lingui/react'
 import {
-  af,
-  ar,
-  ca,
-  cs,
-  da,
-  de,
-  el,
-  en,
-  es,
-  fi,
-  fr,
-  he,
-  hu,
-  id,
-  it,
-  ja,
-  ko,
-  nl,
-  no,
-  pl,
-  pt,
-  ro,
-  ru,
-  sr,
-  sv,
-  sw,
-  tr,
-  uk,
-  vi,
-  zh,
+  af, ar, ca, cs, da, de, el, en, es, fi, fr, he, hu,
+  id, it, ja, ko, nl, no, pl, pt, ro, ru, sr, sv, sw, tr, uk, vi, zh,
 } from 'make-plural/plurals'
 import { PluralCategory } from 'make-plural/plurals'
 
@@ -78,15 +50,23 @@ const plurals: LocalePlural = {
   pseudo: en,
 }
 
+// Import all .po files dynamically (lazy-load compatible with all Vite setups)
+const localeFiles = import.meta.glob('../locales/*.po')
+
 export async function dynamicActivate(locale: SupportedLocale) {
-  i18n.loadLocaleData(locale, { plurals: plurals[locale] })
+  // i18n.loadLocaleData(locale, { plurals: plurals[locale] })
+
   try {
-    const catalog = await import(`../locales/${locale}.po`)
-    // Bundlers will either export it as default or as a named export named default.
-    i18n.load(locale, catalog.messages || catalog.default.messages)
+    const importPath = `../locales/${locale}.po`
+    const loader = localeFiles[importPath]
+    if (!loader) throw new Error(`Locale file not found: ${importPath}`)
+
+    const catalogModule = await loader() as { messages?: object; default?: { messages?: object } }
+    const messages = catalogModule.messages || catalogModule.default?.messages || {}
+
+    i18n.load(locale, messages)
     i18n.activate(locale)
   } catch (error) {
-    // Do nothing
     console.error('Could not load locale file: ' + locale, error)
   }
 }
@@ -106,10 +86,6 @@ export function Provider({ locale, onActivate, children }: ProviderProps) {
       })
   }, [locale, onActivate])
 
-  // Initialize the locale immediately if it is DEFAULT_LOCALE, so that keys are shown while the translation messages load.
-  // This renders the translation _keys_, not the translation _messages_, which is only acceptable while loading the DEFAULT_LOCALE,
-  // as [there are no "default" messages](https://github.com/lingui/js-lingui/issues/388#issuecomment-497779030).
-  // See https://github.com/lingui/js-lingui/issues/1194#issuecomment-1068488619.
   if (i18n.locale === undefined && locale === DEFAULT_LOCALE) {
     i18n.loadLocaleData(DEFAULT_LOCALE, { plurals: plurals[DEFAULT_LOCALE] })
     i18n.load(DEFAULT_LOCALE, {})
