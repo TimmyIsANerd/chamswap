@@ -1,6 +1,7 @@
 import { SupportedChainId as ChainId, SupportedChainId } from '@cowprotocol/cow-sdk'
 
 import { COW_CONTRACT_ADDRESS, V_COW_CONTRACT_ADDRESS } from './common'
+import { CHAM_CONTRACT_ADDRESS } from './common'
 import { cowprotocolTokenLogoUrl } from './cowprotocolTokenLogoUrl'
 import { NATIVE_CURRENCIES, WETH_MAINNET, WRAPPED_NATIVE_CURRENCIES } from './nativeAndWrappedTokens'
 import { TokenWithLogo } from './types'
@@ -577,4 +578,60 @@ export const TOKEN_DISTRO_CONTRACT_ADDRESSES: Record<SupportedChainId, string> =
   [SupportedChainId.ARBITRUM_ONE]: '', // doesn't exist
   [SupportedChainId.BASE]: '', // doesn't exist
   [SupportedChainId.SEPOLIA]: '', // TODO SEPOLIA: check it
+}
+
+/**
+ * Cham token
+ */
+const CHAM_TOKEN_MAINNET = new TokenWithLogo(
+  undefined, // TODO: Update with CHAM logo URI
+  SupportedChainId.MAINNET,
+  CHAM_CONTRACT_ADDRESS[SupportedChainId.MAINNET],
+  18,
+  'CHAM',
+  'Cham Token',
+)
+
+const CHAM_TOKEN_XDAI = new TokenWithLogo(
+  CHAM_TOKEN_MAINNET.logoURI,
+  SupportedChainId.GNOSIS_CHAIN,
+  CHAM_CONTRACT_ADDRESS[SupportedChainId.GNOSIS_CHAIN],
+  18,
+  'CHAM',
+  'Cham Token',
+)
+
+export const CHAM_TOKEN_ARBITRUM = new TokenWithLogo(
+  CHAM_TOKEN_MAINNET.logoURI,
+  SupportedChainId.ARBITRUM_ONE,
+  CHAM_CONTRACT_ADDRESS[SupportedChainId.ARBITRUM_ONE],
+  18,
+  'CHAM',
+  'Cham Token',
+)
+
+export const CHAM_TOKEN_BASE = new TokenWithLogo(
+  CHAM_TOKEN_MAINNET.logoURI,
+  SupportedChainId.BASE,
+  CHAM_CONTRACT_ADDRESS[SupportedChainId.BASE],
+  18,
+  'CHAM',
+  'Cham Token',
+)
+
+const CHAM_TOKEN_SEPOLIA = new TokenWithLogo(
+  CHAM_TOKEN_MAINNET.logoURI,
+  SupportedChainId.SEPOLIA,
+  CHAM_CONTRACT_ADDRESS[SupportedChainId.SEPOLIA],
+  18,
+  'CHAM',
+  'Cham Token',
+)
+
+export const CHAM: Record<SupportedChainId, TokenWithLogo> = {
+  [SupportedChainId.MAINNET]: CHAM_TOKEN_MAINNET,
+  [SupportedChainId.GNOSIS_CHAIN]: CHAM_TOKEN_XDAI,
+  [SupportedChainId.ARBITRUM_ONE]: CHAM_TOKEN_ARBITRUM,
+  [SupportedChainId.BASE]: CHAM_TOKEN_BASE,
+  [SupportedChainId.SEPOLIA]: CHAM_TOKEN_SEPOLIA,
 }

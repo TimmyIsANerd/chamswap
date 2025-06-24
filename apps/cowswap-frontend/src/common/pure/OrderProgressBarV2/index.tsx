@@ -375,7 +375,7 @@ function AnimatedTokens({
       </styledEl.TokenWrapper>
       <styledEl.TokenWrapper position="right" bgColor={'#012F7A'} size={ICON_SIZE} sizeMobile={MOBILE_ICON_SIZE}>
         <ProductLogo
-          variant={ProductVariant.CowSwap}
+          variant={ProductVariant.ChameleonSwap}
           theme={'dark'}
           overrideHoverColor={'#ff65ff'}
           height={58}
@@ -526,7 +526,7 @@ function RenderProgressTopSection({
 
                 <styledEl.FinishedLogo>
                   <ProductLogo
-                    variant={ProductVariant.CowSwap}
+                    variant={ProductVariant.ChameleonSwap}
                     theme="dark"
                     overrideColor={UI.COLOR_PRIMARY_DARKER}
                     height={19}
@@ -1022,8 +1022,8 @@ function SolvingStep(props: OrderProgressBarV2Props) {
               </>
             ) : isSolved ? (
               <>
-                Something went wrong and your order couldn't be executed with this batch. But don't worry! Chameleaon swap is
-                already holding another competition for your order.
+                Something went wrong and your order couldn't be executed with this batch. But don't worry! Chameleaon
+                swap is already holding another competition for your order.
               </>
             ) : (
               <>

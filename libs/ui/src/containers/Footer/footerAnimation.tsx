@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 
-import IMG_FLYING_WINK_COW_DARK from '@cowprotocol/assets/images/flying-wink-cow-dark-mode.svg'
+import CHAMELEON_DARK from '@cowprotocol/assets/images/Chameleon-black.png'
 
 import SVG from 'react-inlinesvg'
 import styled, { keyframes } from 'styled-components/macro'
@@ -19,7 +19,7 @@ const scrollHorizontal = keyframes`
 const FooterAnimationContainer = styled.div`
   --height: 112px;
   --fontSize: 156px;
-  --animationSpeed: 10s;
+  --animationSpeed: 14s;
 
   display: flex;
   justify-content: flex-start;
@@ -76,29 +76,33 @@ export const FooterAnimation = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (containerRef.current && contentRef.current) {
-      const contentWidth = contentRef.current.getBoundingClientRect().width
-      const containerWidth = containerRef.current.getBoundingClientRect().width
+  // useEffect(() => {
+  //   if (containerRef.current && contentRef.current) {
+  //     const contentWidth = contentRef.current.getBoundingClientRect().width
+  //     const containerWidth = containerRef.current.getBoundingClientRect().width
 
-      // Ensure the content width is at least twice the container width for smooth scrolling
-      if (contentWidth < containerWidth * 2) {
-        const clone = contentRef.current.cloneNode(true) as HTMLDivElement
-        containerRef.current.appendChild(clone)
-      }
-    }
-  }, [])
+  //     // Ensure the content width is at least twice the container width for smooth scrolling
+  //     if (contentWidth < containerWidth * 2) {
+  //       const clone = contentRef.current.cloneNode(true) as HTMLDivElement
+  //       containerRef.current.appendChild(clone)
+  //     }
+  //   }
+  // }, [])
 
   return (
     <FooterAnimationContainer ref={containerRef}>
       <ScrollingContent ref={contentRef}>
         <ScrollingContentWrapper>
-          <b>MOOOOOOOOOOOOOOOOOO</b>
-          <SVG src={IMG_FLYING_WINK_COW_DARK} />
+          <b>CHAMELEON CHAMELEON</b>
+          <img src={CHAMELEON_DARK} width={120} height={120} alt="Chameleon" />
         </ScrollingContentWrapper>
         <ScrollingContentWrapper>
-          <b>MOOOOOOOOOOOOOOOOOO</b>
-          <SVG src={IMG_FLYING_WINK_COW_DARK} />
+          <b>CHAMELEON CHAMELEON</b>
+          <img src={CHAMELEON_DARK} width={120} height={120} alt="Chameleon" />
+        </ScrollingContentWrapper>
+        <ScrollingContentWrapper>
+          <b>CHAMELEON CHAMELEON</b>
+          <img src={CHAMELEON_DARK} width={120} height={120} alt="Chameleon" />
         </ScrollingContentWrapper>
       </ScrollingContent>
     </FooterAnimationContainer>

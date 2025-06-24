@@ -3,8 +3,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import ArrowIcon from '@cowprotocol/assets/cow-swap/arrow.svg'
 import CowImage from '@cowprotocol/assets/cow-swap/cow_token.svg'
 import vCOWImage from '@cowprotocol/assets/images/vCOW.svg'
+import ChamImage from '@cowprotocol/assets/images/Chameleon-2.png'
+// const ChamImage = '/images/Chameleon-1.png'
+
 import { useCurrencyAmountBalance } from '@cowprotocol/balances-and-allowances'
-import { COW, COW_CONTRACT_ADDRESS, V_COW } from '@cowprotocol/common-const'
+import { CHAM, CHAM_CONTRACT_ADDRESS, V_COW } from '@cowprotocol/common-const'
 import { usePrevious } from '@cowprotocol/common-hooks'
 import { getBlockExplorerUrl, getProviderErrorMessage } from '@cowprotocol/common-utils'
 import { ButtonPrimary, HoverTooltip, TokenAmount } from '@cowprotocol/ui'
@@ -61,12 +64,11 @@ export default function Profile() {
   // Locked GNO balance
   const { loading: isLockedGnoLoading, ...lockedGnoBalances } = useCowFromLockedGnoBalances()
 
-  const cowToken = COW[chainId]
+  const chamToken = CHAM[chainId]
   const vCowToken = V_COW[chainId]
-  // Cow balance
-  const cow = useCurrencyAmountBalance(chainId ? cowToken : undefined) || CurrencyAmount.fromRawAmount(cowToken, 0)
+  // Cham balance
+  const cham = useCurrencyAmountBalance(chainId ? chamToken : undefined) || CurrencyAmount.fromRawAmount(chamToken, 0)
 
-  // vCHM balance values
   const { unvested, vested, total, isLoading: isVCowLoading } = useVCowData()
 
   // Boolean flags
@@ -263,12 +265,12 @@ export default function Profile() {
 
           <Card>
             <BalanceDisplay titleSize={26}>
-              <img src={CowImage} alt="CHM Balance" height="80" width="80" />
+              <img src={ChamImage} alt="CHAM Balance" height="80" width="80" />
               <span>
-                <i>Available CHM balance</i>
+                <i>Available CHAM balance</i>
                 <b>
                   {!isProviderNetworkUnsupported && (
-                    <TokenAmount amount={cow} defaultValue="0" tokenSymbol={cowToken} />
+                    <TokenAmount amount={cham} defaultValue="0" tokenSymbol={chamToken} />
                   )}
                 </b>
               </span>
@@ -276,22 +278,22 @@ export default function Profile() {
             <CardActions>
               <ExtLink
                 title="View contract"
-                href={getBlockExplorerUrl(chainId, 'token', COW_CONTRACT_ADDRESS[chainId])}
+                href={getBlockExplorerUrl(chainId, 'token', CHAM_CONTRACT_ADDRESS[chainId])}
               >
                 View contract ↗
               </ExtLink>
 
               <StyledWatchAssetInWallet
                 shortLabel
-                currency={cowToken}
+                currency={chamToken}
                 fallback={
-                  <CopyHelper toCopy={COW_CONTRACT_ADDRESS[chainId]}>
+                  <CopyHelper toCopy={CHAM_CONTRACT_ADDRESS[chainId]}>
                     <div title="Click to copy token contract address">Copy contract</div>
                   </CopyHelper>
                 }
               />
 
-              <Link to={`/swap?outputCurrency=${COW_CONTRACT_ADDRESS[chainId]}`}>Buy CHM</Link>
+              <Link to={`/swap?outputCurrency=${CHAM_CONTRACT_ADDRESS[chainId]}`}>Buy CHAM</Link>
             </CardActions>
           </Card>
 

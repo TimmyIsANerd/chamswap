@@ -150,7 +150,7 @@ export const LoadingApp = () => {
     <LoadingWrapper>
       {!isInjectedWidgetMode && (
         <span>
-          <ProductLogo variant={ProductVariant.CowSwap} height={100} logoIconOnly />
+          <ProductLogo variant={ProductVariant.ChameleonSwap} height={100} logoIconOnly />
         </span>
       )}
       <p>
