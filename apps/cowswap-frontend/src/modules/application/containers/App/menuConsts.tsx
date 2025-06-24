@@ -7,7 +7,7 @@ import { FortuneWidget } from 'modules/fortune/containers/FortuneWidget'
 
 // import { Routes } from 'common/constants/routes'
 
-export const PRODUCT_VARIANT = ProductVariant.CowSwap
+export const PRODUCT_VARIANT = ProductVariant.ChameleonSwap
 export const NAV_ITEMS: MenuItem[] = [
   {
     label: 'Account',

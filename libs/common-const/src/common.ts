@@ -90,6 +90,14 @@ export const COW_CONTRACT_ADDRESS: Record<SupportedChainId, string> = {
   [SupportedChainId.SEPOLIA]: '0x0625aFB445C3B6B7B929342a04A22599fd5dBB59',
 }
 
+export const CHAM_CONTRACT_ADDRESS: Record<SupportedChainId, string> = {
+  [SupportedChainId.MAINNET]: '0x0000000000000000000000000000000000000001', // Update with real CHAM address
+  [SupportedChainId.GNOSIS_CHAIN]: '0x0000000000000000000000000000000000000002', // Update with real CHAM address
+  [SupportedChainId.ARBITRUM_ONE]: '0x0000000000000000000000000000000000000003', // Update with real CHAM address
+  [SupportedChainId.BASE]: '0x0000000000000000000000000000000000000004', // Update with real CHAM address
+  [SupportedChainId.SEPOLIA]: '0x0000000000000000000000000000000000000005', // Update with real CHAM address
+}
+
 export const INPUT_OUTPUT_EXPLANATION = 'Only executed swaps incur fees.'
 export const PENDING_ORDERS_BUFFER = ms`60s` // 60s
 export const CANCELLED_ORDERS_PENDING_TIME = ms`5min` // 5min

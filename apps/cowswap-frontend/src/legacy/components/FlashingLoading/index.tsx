@@ -62,7 +62,7 @@ export const LoadingWrapper = styled.div`
 export const Loading: React.FC = () => {
   return (
     <LoadingWrapper>
-      <ProductLogo variant={ProductVariant.CowSwap} height={100} logoIconOnly />
+      <ProductLogo variant={ProductVariant.ChameleonSwap} height={100} logoIconOnly />
       <span>Loading...</span>
     </LoadingWrapper>
   )

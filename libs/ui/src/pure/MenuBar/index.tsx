@@ -52,7 +52,7 @@ const DAO_NAV_ITEMS: MenuItem[] = [
   },
   {
     href: 'https://chameleon.exchange/',
-    productVariant: ProductVariant.CowSwap,
+    productVariant: ProductVariant.ChameleonSwap,
     hoverColor: '#ff65ff',
     hoverBgColor: '#012F7A',
     external: true,
@@ -195,11 +195,8 @@ const NavItem = ({
       LinkComponent={LinkComponent}
     />
   ) : href ? (
-    <RootNavItem mobileMode={mobileMode}
-      onClick={handleClick}>
-      <LinkComponent
-        href={href}
-      >
+    <RootNavItem mobileMode={mobileMode} onClick={handleClick}>
+      <LinkComponent href={href}>
         {item.label} {item.external && <span>&#8599;</span>}
       </LinkComponent>
     </RootNavItem>
@@ -416,12 +413,12 @@ const GenericDropdown: React.FC<DropdownProps> = ({
   const interactionProps = useMemo(() => {
     return interaction === 'hover'
       ? {
-        onMouseEnter: onTrigger,
-        onMouseLeave: onTrigger,
-      }
+          onMouseEnter: onTrigger,
+          onMouseLeave: onTrigger,
+        }
       : {
-        onClick: onTrigger,
-      }
+          onClick: onTrigger,
+        }
   }, [interaction, onTrigger])
 
   return (

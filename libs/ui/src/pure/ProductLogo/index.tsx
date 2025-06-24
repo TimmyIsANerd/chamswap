@@ -21,7 +21,7 @@ import { Color } from '../../consts'
 import { CowSwapTheme } from '../../types'
 
 export enum ProductVariant {
-  CowSwap = 'cowSwap',
+  ChameleonSwap = 'chameleonSwap',
   CowExplorer = 'cowExplorer',
   CowProtocol = 'cowProtocol',
   MevBlocker = 'mevBlocker',
@@ -47,43 +47,43 @@ export type ThemedLogo = Partial<Record<CowSwapTheme, { default: LogoInfo; logoI
 }
 
 const LOGOS: Record<ProductVariant, ThemedLogo> = {
-  // Chameleaon swap
-  [ProductVariant.CowSwap]: {
+  // Chameleon swap
+  [ProductVariant.ChameleonSwap]: {
     light: {
       default: {
         src: LOGO_CHAMELEONSWAP,
-        alt: 'Chameleaon swap',
+        alt: 'Chameleon swap',
         color: ' #760093',
       },
       logoIconOnly: {
         src: LOGO_ICON_CHAMELEON,
-        alt: 'Chameleaon swap',
+        alt: 'Chameleon swap',
         color: ' #760093',
       },
     },
     dark: {
       default: {
         src: LOGO_CHAMELEONSWAP,
-        alt: ' Chameleaon swap',
+        alt: 'Chameleon swap',
         color: ' #c165ff',
       },
       logoIconOnly: {
         src: LOGO_ICON_CHAMELEON,
-        alt: 'Chameleaon swap',
+        alt: 'Chameleon swap',
         color: ' #c165ff',
       },
     },
     darkHalloween: {
       default: {
         src: LOGO_COWSWAP_HALLOWEEN,
-        alt: 'Chameleaon swap',
+        alt: 'Chameleon swap',
         color: ' #ff65ff',
       },
     },
     darkChristmas: {
       default: {
         src: LOGO_COWSWAP_CHRISTMAS_DARK,
-        alt: 'Chameleaon swap',
+        alt: 'Chameleon swap',
         color: ' #ff65ff',
         height: '56px',
         heightMobile: '50px',
@@ -93,7 +93,7 @@ const LOGOS: Record<ProductVariant, ThemedLogo> = {
     lightChristmas: {
       default: {
         src: LOGO_COWSWAP_CHRISTMAS,
-        alt: 'Chameleaon swap',
+        alt: 'Chameleon swap',
         color: '#7a0093',
         height: '56px',
         heightMobile: '50px',
@@ -322,8 +322,9 @@ export const ProductLogo = ({
   className,
 }: LogoProps) => {
   const themeMode = useTheme()
-  const selectedTheme = customThemeMode || (themeMode.darkMode ? 'dark' : 'light')
-  const logoForTheme = LOGOS[variant][selectedTheme] || LOGOS[variant]['light'] // Fallback to light theme if selected theme is not available
+  const selectedTheme = customThemeMode || (themeMode?.darkMode ? 'dark' : 'light') || 'light'
+  const logoForTheme =
+    LOGOS[variant]?.[selectedTheme] || LOGOS[variant]?.['light'] || LOGOS[ProductVariant.ChameleonSwap]?.['light'] // Fallback to light theme if selected theme is not available
   const logoInfo = logoIconOnly && logoForTheme.logoIconOnly ? logoForTheme.logoIconOnly : logoForTheme.default
   const initialColor = logoInfo.preserveOriginalColors ? undefined : overrideColor || logoInfo.color
 
