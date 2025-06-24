@@ -1,4 +1,5 @@
 import CowImage from '@cowprotocol/assets/cow-swap/cow_token.svg'
+import ChamImage from '@cowprotocol/assets/images/Chameleon-2.png'
 import DelegateCowIcon from '@cowprotocol/assets/cow-swap/delegate-cow.svg'
 import { ClosableBanner, ButtonPrimary } from '@cowprotocol/ui'
 
@@ -27,7 +28,7 @@ export default function Delegate({ dismissable = false, rowOnMobile }: DelegateP
           to vote?
         </BannerCardTitle>
         <small>
-          Delegate your <img src={CowImage} alt="CHM Balance" height="16" width="16" /> (v)CHM
+          Delegate your <img src={ChamImage} alt="CHM Balance" height="24" width="24" /> (v)CHM
         </small>
         <ButtonPrimary as="a" href={DELEGATE_URL} target="_blank" rel="noopener nofollow">
           Delegate Now ↗
