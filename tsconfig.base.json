@@ -33,6 +33,7 @@
     "paths": {
       "@cowprotocol/abis": ["libs/abis/src/index.ts"],
       "@cowprotocol/analytics": ["libs/analytics/src/index.ts"],
+      "@cowprotocol/assets": ["libs/assets/src/index.ts"],
       "@cowprotocol/assets/*": ["libs/assets/src/*"],
       "@cowprotocol/balances-and-allowances": ["libs/balances-and-allowances/src/index.ts"],
       "@cowprotocol/common-const": ["libs/common-const/src/index.ts"],

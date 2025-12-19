@@ -29,7 +29,7 @@ export const defaultSlippageAtom = atom((get) => {
   const { chainId } = get(walletInfoAtom)
   const isEoaEthFlow = get(isEoaEthFlowAtom)
 
-  return isEoaEthFlow ? MINIMUM_ETH_FLOW_SLIPPAGE_BPS[chainId] : DEFAULT_SLIPPAGE_BPS
+  return isEoaEthFlow ? (MINIMUM_ETH_FLOW_SLIPPAGE_BPS[chainId] ?? DEFAULT_SLIPPAGE_BPS) : DEFAULT_SLIPPAGE_BPS
 })
 
 const currentSlippageAtom = atom<number | null>((get) => {

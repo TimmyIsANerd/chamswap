@@ -52,13 +52,16 @@ export function useNavigateOnCurrencySelection(): CurrencySelectionCallback {
 
       const { inputCurrencyId, outputCurrencyId } = state
       const tokenSymbolOrAddress = resolveCurrencyAddressOrSymbol(currency)
+      const currentChainId = state.chainId || chainId
+      const targetChainId = currency?.chainId || currentChainId
+      const isDifferentChain = currentChainId && targetChainId && currentChainId !== targetChainId
 
-      const targetInputCurrencyId = field === Field.INPUT ? tokenSymbolOrAddress : inputCurrencyId
-      const targetOutputCurrencyId = field === Field.INPUT ? outputCurrencyId : tokenSymbolOrAddress
+      const targetInputCurrencyId = field === Field.INPUT ? tokenSymbolOrAddress : isDifferentChain ? null : inputCurrencyId
+      const targetOutputCurrencyId = field === Field.INPUT ? isDifferentChain ? null : outputCurrencyId : tokenSymbolOrAddress
       const areCurrenciesTheSame = targetInputCurrencyId === targetOutputCurrencyId
 
       navigate(
-        chainId,
+        targetChainId,
         // Just invert tokens when user selected the same token
         areCurrenciesTheSame
           ? { inputCurrencyId: outputCurrencyId, outputCurrencyId: inputCurrencyId }

@@ -16,13 +16,16 @@ import { environmentAtom } from '../environmentAtom'
 
 const UNISWAP_TOKEN_LIST_URL: Record<SupportedChainId, string> = {
   [SupportedChainId.MAINNET]: UNISWAP_TOKENS_LIST,
-  [SupportedChainId.GNOSIS_CHAIN]:
-    'https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/Uniswap.100.json',
-  [SupportedChainId.ARBITRUM_ONE]:
-    'https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/Uniswap.42161.json',
-  [SupportedChainId.BASE]:
-    'https://raw.githubusercontent.com/cowprotocol/token-lists/main/src/public/Uniswap.8453.json',
+  [SupportedChainId.GNOSIS_CHAIN]: 'https://files.cow.fi/token-lists/Uniswap.100.json',
+  [SupportedChainId.ARBITRUM_ONE]: 'https://files.cow.fi/token-lists/Uniswap.42161.json',
+  [SupportedChainId.BASE]: 'https://files.cow.fi/token-lists/Uniswap.8453.json',
   [SupportedChainId.SEPOLIA]: UNISWAP_TOKENS_LIST,
+  [SupportedChainId.POLYGON]: 'https://files.cow.fi/token-lists/Uniswap.137.json',
+  [SupportedChainId.AVALANCHE]: 'https://files.cow.fi/token-lists/Uniswap.43114.json',
+  [SupportedChainId.LENS]: 'https://files.cow.fi/token-lists/CoinGecko.232.json',
+  [SupportedChainId.BNB]: 'https://files.cow.fi/token-lists/Uniswap.56.json',
+  [SupportedChainId.LINEA]: 'https://files.cow.fi/token-lists/Uniswap.59144.json',
+  [SupportedChainId.PLASMA]: 'https://files.cow.fi/token-lists/Uniswap.9745.json',
 }
 
 const curatedListSourceAtom = atom((get) => {

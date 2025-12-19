@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react'
 
 import { CowShedContract, CowShedContractAbi } from '@cowprotocol/abis'
 import { SigningScheme } from '@cowprotocol/contracts'
-import { COW_SHED_FACTORY, ICoWShedCall } from '@cowprotocol/cow-sdk'
+import { COW_SHED_FACTORY, ICoWShedCall } from '@cowprotocol/sdk-cow-shed'
 import { useWalletInfo } from '@cowprotocol/wallet'
 import { useWalletProvider } from '@cowprotocol/wallet-provider'
 import { defaultAbiCoder } from '@ethersproject/abi'

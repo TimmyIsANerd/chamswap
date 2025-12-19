@@ -21,6 +21,12 @@ function _getExplorerUrlByEnvironment(): Record<ChainId, string> {
     [ChainId.ARBITRUM_ONE]: `${baseUrl}/arb1`,
     [ChainId.BASE]: `${baseUrl}/base`,
     [ChainId.SEPOLIA]: `${baseUrl}/sepolia`,
+    [ChainId.BNB]: `${baseUrl}/bnb`,
+    [ChainId.LENS]: `${baseUrl}/lens`,
+    [ChainId.LINEA]: `${baseUrl}/linea`,
+    [ChainId.PLASMA]: `${baseUrl}/plasma`,
+    [ChainId.POLYGON]: `${baseUrl}/polygon`,
+    [ChainId.AVALANCHE]: `${baseUrl}/avalanche`,
   }
 }
 

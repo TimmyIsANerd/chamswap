@@ -70,7 +70,7 @@ export function NetworksList(props: NetworksListProps) {
               )}
 
               <ExternalLink href={getExplorerBaseUrl(targetChainId)}>
-                <Trans>CoW Protocol Explorer</Trans>
+                <Trans>Chameleon Protocol Explorer ↗</Trans>
                 <styledEl.LinkOutCircle />
               </ExternalLink>
             </styledEl.ActiveRowLinkList>
