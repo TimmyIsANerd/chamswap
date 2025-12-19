@@ -130,7 +130,7 @@ export function IframeDappContainer({ dapp, context }: IframeDappContainerProps)
     <>
       {isLoading && (
         <LoadingWrapper>
-          <StyledProductLogo variant={ProductVariant.CowSwap} logoIconOnly height={56} />
+          <StyledProductLogo variant={ProductVariant.ChameleonSwap} logoIconOnly height={56} />
           <LoadingText>Loading hook...</LoadingText>
         </LoadingWrapper>
       )}
