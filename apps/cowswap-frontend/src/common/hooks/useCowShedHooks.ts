@@ -1,4 +1,4 @@
-import { CowShedHooks } from '@cowprotocol/cow-sdk'
+import { CowShedHooks } from '@cowprotocol/sdk-cow-shed'
 import { useWalletInfo } from '@cowprotocol/wallet'
 
 import useSWR from 'swr'

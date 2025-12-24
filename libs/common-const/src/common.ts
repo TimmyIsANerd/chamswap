@@ -47,8 +47,8 @@ const NEW_COWSWAP_ETHFLOW_CONTRACT_ADDRESS: Record<Env, string> = {
 }
 
 const OLD_COWSWAP_ETHFLOW_CONTRACT_ADDRESS: Record<Env, Record<SupportedChainId, string>> = {
-  prod: mapSupportedNetworks((chain) => EthFlowProd[chain].address),
-  barn: mapSupportedNetworks((chain) => EthFlowBarn[chain].address),
+  prod: mapSupportedNetworks((chain) => (EthFlowProd as any)[chain]?.address ?? ''),
+  barn: mapSupportedNetworks((chain) => (EthFlowBarn as any)[chain]?.address ?? ''),
 }
 
 export function getEthFlowContractAddresses(
@@ -75,28 +75,37 @@ export function getEthFlowContractAddresses(
 }
 
 export const V_COW_CONTRACT_ADDRESS: Record<SupportedChainId, string | null> = {
+  ...mapSupportedNetworks(null),
   [SupportedChainId.MAINNET]: '0xd057b63f5e69cf1b929b356b579cba08d7688048',
   [SupportedChainId.GNOSIS_CHAIN]: '0xc20C9C13E853fc64d054b73fF21d3636B2d97eaB',
-  [SupportedChainId.ARBITRUM_ONE]: null, // doesn't exist!
-  [SupportedChainId.BASE]: null, // doesn't exist!
   [SupportedChainId.SEPOLIA]: '0x21d06a222bbb94ec1406a0a8ba86b4d761bc9864',
-}
+} as Record<SupportedChainId, string | null>
 
-export const COW_CONTRACT_ADDRESS: Record<SupportedChainId, string> = {
+export const COW_CONTRACT_ADDRESS: Record<SupportedChainId, string | null> = {
   [SupportedChainId.MAINNET]: '0xDEf1CA1fb7FBcDC777520aa7f396b4E015F497aB',
   [SupportedChainId.GNOSIS_CHAIN]: '0x177127622c4A00F3d409B75571e12cB3c8973d3c',
   [SupportedChainId.ARBITRUM_ONE]: '0xcb8b5cd20bdcaea9a010ac1f8d835824f5c87a04',
   [SupportedChainId.BASE]: '0xc694a91e6b071bF030A18BD3053A7fE09B6DaE69',
   [SupportedChainId.SEPOLIA]: '0x0625aFB445C3B6B7B929342a04A22599fd5dBB59',
-}
+  [SupportedChainId.POLYGON]: '0x2f4efd3aa42e15a1ec6114547151b63ee5d39958',
+  [SupportedChainId.AVALANCHE]: null,
+  [SupportedChainId.LENS]: null,
+  [SupportedChainId.BNB]: '0x5bfdaa3f7c28b9994b56135403bf1acea02595b0',
+  [SupportedChainId.LINEA]: '0x5bfdaa3f7c28b9994b56135403bf1acea02595b0',
+  [SupportedChainId.PLASMA]: null,
+} as Record<SupportedChainId, string | null>
 
-export const CHAM_CONTRACT_ADDRESS: Record<SupportedChainId, string> = {
+const CHAM_ADDRESS_OVERRIDES: Partial<Record<SupportedChainId, string>> = {
   [SupportedChainId.MAINNET]: '0x0000000000000000000000000000000000000001', // Update with real CHAM address
   [SupportedChainId.GNOSIS_CHAIN]: '0x0000000000000000000000000000000000000002', // Update with real CHAM address
   [SupportedChainId.ARBITRUM_ONE]: '0x0000000000000000000000000000000000000003', // Update with real CHAM address
   [SupportedChainId.BASE]: '0x0000000000000000000000000000000000000004', // Update with real CHAM address
   [SupportedChainId.SEPOLIA]: '0x0000000000000000000000000000000000000005', // Update with real CHAM address
 }
+
+export const CHAM_CONTRACT_ADDRESS: Record<SupportedChainId, string> = mapSupportedNetworks(
+  (chainId) => CHAM_ADDRESS_OVERRIDES[chainId] ?? '0x0000000000000000000000000000000000000000',
+)
 
 export const INPUT_OUTPUT_EXPLANATION = 'Only executed swaps incur fees.'
 export const PENDING_ORDERS_BUFFER = ms`60s` // 60s
@@ -107,16 +116,16 @@ export const MINIMUM_ORDER_VALID_TO_TIME_SECONDS = 120
 // Minimum deadline for EthFlow orders. Like the default deadline, anything smaller will be replaced by this
 export const MINIMUM_ETH_FLOW_DEADLINE_SECONDS = 600 // 10 minutes in SECONDS
 
-export const MINIMUM_ETH_FLOW_SLIPPAGE_BPS: Record<SupportedChainId, number> = {
+const MIN_ETH_FLOW_SLIPPAGE_BPS_OVERRIDES: Partial<Record<SupportedChainId, number>> = {
   [SupportedChainId.MAINNET]: 200, // 2%
-  [SupportedChainId.GNOSIS_CHAIN]: DEFAULT_SLIPPAGE_BPS,
-  [SupportedChainId.ARBITRUM_ONE]: DEFAULT_SLIPPAGE_BPS,
-  [SupportedChainId.BASE]: DEFAULT_SLIPPAGE_BPS,
-  [SupportedChainId.SEPOLIA]: DEFAULT_SLIPPAGE_BPS,
 }
 
+export const MINIMUM_ETH_FLOW_SLIPPAGE_BPS: Record<SupportedChainId, number> = mapSupportedNetworks(
+  (chainId) => MIN_ETH_FLOW_SLIPPAGE_BPS_OVERRIDES[chainId] ?? DEFAULT_SLIPPAGE_BPS,
+)
+
 export const MINIMUM_ETH_FLOW_SLIPPAGE: Record<SupportedChainId, Percent> = mapSupportedNetworks(
-  (chainId) => new Percent(MINIMUM_ETH_FLOW_SLIPPAGE_BPS[chainId], 10_000),
+  (chainId) => new Percent(MINIMUM_ETH_FLOW_SLIPPAGE_BPS[chainId] ?? DEFAULT_SLIPPAGE_BPS, 10_000),
 )
 export const HIGH_ETH_FLOW_SLIPPAGE_BPS = 1_000 // 10%
 
@@ -151,14 +160,26 @@ export const GAS_FEE_ENDPOINTS: Record<SupportedChainId, string> = {
   [SupportedChainId.ARBITRUM_ONE]: 'https://arbitrum.blockscout.com/api/v1/gas-price-oracle',
   [SupportedChainId.BASE]: 'https://base.blockscout.com/api/v1/gas-price-oracle',
   [SupportedChainId.SEPOLIA]: '',
-}
+  [SupportedChainId.POLYGON]: 'https://polygon.blockscout.com/api/v1/gas-price-oracle',
+  [SupportedChainId.AVALANCHE]: 'https://api.blocknative.com/gasprices/blockprices?chainid=43114',
+  [SupportedChainId.LENS]: 'https://api.blocknative.com/gasprices/blockprices?chainid=232',
+  [SupportedChainId.BNB]: 'https://api.blocknative.com/gasprices/blockprices?chainid=56',
+  [SupportedChainId.LINEA]: 'https://api.blocknative.com/gasprices/blockprices?chainid=59144',
+  [SupportedChainId.PLASMA]: '', // TODO: currently (2025/10/20) unsupported by Blocknative nor blockscont
+} as Record<SupportedChainId, string>
 export const GAS_API_KEYS: Record<SupportedChainId, string | null> = {
   [SupportedChainId.MAINNET]: process.env.REACT_APP_BLOCKNATIVE_API_KEY || null,
   [SupportedChainId.GNOSIS_CHAIN]: null,
   [SupportedChainId.ARBITRUM_ONE]: null,
   [SupportedChainId.BASE]: null,
   [SupportedChainId.SEPOLIA]: null,
-}
+  [SupportedChainId.POLYGON]: null,
+  [SupportedChainId.AVALANCHE]: process.env.REACT_APP_BLOCKNATIVE_API_KEY || null,
+  [SupportedChainId.LENS]: process.env.REACT_APP_BLOCKNATIVE_API_KEY || null,
+  [SupportedChainId.BNB]: process.env.REACT_APP_BLOCKNATIVE_API_KEY || null,
+  [SupportedChainId.LINEA]: process.env.REACT_APP_BLOCKNATIVE_API_KEY || null,
+  [SupportedChainId.PLASMA]: null,
+} as Record<SupportedChainId, string | null>
 
 export const UNSUPPORTED_TOKENS_FAQ_URL = 'https://docs.cow.fi/cow-protocol/reference/core/tokens'
 

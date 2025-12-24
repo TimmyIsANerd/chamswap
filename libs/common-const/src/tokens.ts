@@ -1,4 +1,4 @@
-import { SupportedChainId as ChainId, SupportedChainId } from '@cowprotocol/cow-sdk'
+import { AdditionalTargetChainId, mapSupportedNetworks, SupportedChainId, SupportedChainId as ChainId } from '@cowprotocol/cow-sdk'
 
 import { COW_CONTRACT_ADDRESS, V_COW_CONTRACT_ADDRESS } from './common'
 import { CHAM_CONTRACT_ADDRESS } from './common'
@@ -348,6 +348,169 @@ export const EUSD_BASE = new TokenWithLogo(
   'Electronic Dollar',
 )
 
+// Polygon
+
+export const USDC_POLYGON = new TokenWithLogo(
+  USDC_MAINNET.logoURI,
+  SupportedChainId.POLYGON,
+  // https://polygonscan.com/address/0x3c499c542cef5e3811e1192ce70d8cc03d5c3359
+  '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
+  6,
+  'USDC',
+  'USD Coin',
+)
+export const USDT_POLYGON = new TokenWithLogo(
+  USDT.logoURI,
+  SupportedChainId.POLYGON,
+  // https://polygonscan.com/address/0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+  '0xc2132d05d31c914a87c6611c10748aeb04b58e8f',
+  6,
+  'USDT',
+  'Tether USD',
+)
+export const DAI_POLYGON = new TokenWithLogo(
+  DAI.logoURI,
+  SupportedChainId.POLYGON,
+  // https://polygonscan.com/address/0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063
+  '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+  18,
+  'DAI',
+  'Dai',
+)
+
+// Avalanche
+
+export const USDC_AVALANCHE = new TokenWithLogo(
+  USDC_MAINNET.logoURI,
+  SupportedChainId.AVALANCHE,
+  // https://snowscan.xyz/token/0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e
+  '0xb97ef9ef8734c71904d8002f8b6bc66dd9c48a6e',
+  6,
+  'USDC',
+  'USD Coin',
+)
+
+export const USDT_AVALANCHE = new TokenWithLogo(
+  USDT.logoURI,
+  SupportedChainId.AVALANCHE,
+  // https://snowscan.xyz/token/0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7
+  '0x9702230a8ea53601f5cd2dc00fdbc13d4df4a8c7',
+  6,
+  'USDT',
+  'Tether USD',
+)
+
+// Lens
+
+export const USDC_LENS = new TokenWithLogo(
+  USDC_MAINNET.logoURI,
+  SupportedChainId.LENS,
+  // https://explorer.lens.xyz/address/0x88F08E304EC4f90D644Cec3Fb69b8aD414acf884
+  '0x88F08E304EC4f90D644Cec3Fb69b8aD414acf884',
+  6,
+  'USDC',
+  'USD Coin',
+)
+
+// BNB
+
+export const USDC_BNB = new TokenWithLogo(
+  USDC_MAINNET.logoURI,
+  SupportedChainId.BNB,
+  // https://bscscan.com/address/0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d
+  '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+  18, // BNB USDC has 18 decimals!!!
+  'USDC',
+  'USD Coin',
+)
+
+export const USDT_BNB = new TokenWithLogo(
+  USDT.logoURI,
+  SupportedChainId.BNB,
+  // https://bscscan.com/address/0x55d398326f99059ff775485246999027b3197955
+  '0x55d398326f99059ff775485246999027b3197955',
+  18, // BNB USDT has 18 decimals!!!
+  'USDT',
+  'Tether USD',
+)
+
+export const DAI_BNB = new TokenWithLogo(
+  DAI.logoURI,
+  SupportedChainId.BNB,
+  // https://bscscan.com/address/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3
+  '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
+  18,
+  'DAI',
+  'Dai Stablecoin',
+)
+
+export const BUSD_BNB = new TokenWithLogo(
+  cowprotocolTokenLogoUrl('0xe9e7cea3dedca5984780bafc599bd69add087d56', SupportedChainId.BNB),
+  SupportedChainId.BNB,
+  // https://bscscan.com/address/0xe9e7cea3dedca5984780bafc599bd69add087d56
+  '0xe9e7cea3dedca5984780bafc599bd69add087d56',
+  18,
+  'BUSD',
+  'Binance-Peg BUSD Token',
+)
+
+export const BTCB_BNB = new TokenWithLogo(
+  cowprotocolTokenLogoUrl('0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c', SupportedChainId.BNB),
+  SupportedChainId.BNB,
+  // https://bscscan.com/address/0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c
+  '0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c',
+  18,
+  'BTCB',
+  'Binance-Peg BTCB Token',
+)
+
+// Linea
+
+export const USDC_LINEA = new TokenWithLogo(
+  USDC_MAINNET.logoURI,
+  SupportedChainId.LINEA,
+  // https://lineascan.build/address/0x176211869cA2b568f2A7D4EE941E073a821EE1ff
+  '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
+  6,
+  'USDC',
+  'USD Coin',
+)
+
+export const USDT_LINEA = new TokenWithLogo(
+  USDT.logoURI,
+  SupportedChainId.LINEA,
+  // https://lineascan.build/address/0xA219439258ca9da29E9Cc4cE5596924745e12B93
+  '0xa219439258ca9da29e9cc4ce5596924745e12b93',
+  6,
+  'USDT',
+  'Tether USD',
+)
+
+// Plasma
+
+// TODO: Verify and add more tokens for Plasma
+export const USDT_PLASMA = new TokenWithLogo(
+  USDT.logoURI,
+  SupportedChainId.PLASMA,
+  // https://plasmascan.to/address/0xB8CE59FC3717ada4C02eaDF9682A9e934F625ebb
+  '0xb8ce59fc3717ada4c02eadf9682a9e934f625ebb',
+  6,
+  'USDT0',
+  'USDT0',
+)
+
+// Optimism
+
+export const USDC_OPTIMISM = new TokenWithLogo(
+  USDC_MAINNET.logoURI,
+  AdditionalTargetChainId.OPTIMISM,
+  // https://optimistic.etherscan.io/address/0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85
+  '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+  6,
+  'USDC',
+  'USD Coin',
+)
+
 // Sepolia
 
 export const GNO_SEPOLIA = new TokenWithLogo(
@@ -359,7 +522,6 @@ export const GNO_SEPOLIA = new TokenWithLogo(
   'GNO (test)',
 )
 
-// Sepolia
 export const USDC_SEPOLIA = new TokenWithLogo(
   USDC_MAINNET.logoURI,
   SupportedChainId.SEPOLIA,
@@ -377,12 +539,23 @@ export const USDT_SEPOLIA = new TokenWithLogo(
   'Tether USD',
 )
 
-export const USDC: Record<SupportedChainId, TokenWithLogo> = {
+export const USDC: Record<SupportedChainId | AdditionalTargetChainId, TokenWithLogo> = {
   [SupportedChainId.MAINNET]: USDC_MAINNET,
   [SupportedChainId.GNOSIS_CHAIN]: USDC_GNOSIS_CHAIN,
   [SupportedChainId.ARBITRUM_ONE]: USDC_ARBITRUM_ONE,
   [SupportedChainId.BASE]: USDC_BASE,
   [SupportedChainId.SEPOLIA]: USDC_SEPOLIA,
+  [SupportedChainId.POLYGON]: USDC_POLYGON,
+  [SupportedChainId.AVALANCHE]: USDC_AVALANCHE,
+  [AdditionalTargetChainId.OPTIMISM]: USDC_OPTIMISM,
+  [SupportedChainId.LENS]: USDC_LENS,
+  [SupportedChainId.BNB]: USDC_BNB,
+  [SupportedChainId.LINEA]: USDC_LINEA,
+  /**
+   * Important! There doesn't seem to be a USDC on Plasma yet, so we map USDT here for now
+   * This might break assumptions elsewhere in the code
+   */
+  [SupportedChainId.PLASMA]: USDT_PLASMA,
 }
 
 export const TOKEN_SHORTHANDS: { [shorthand: string]: Record<SupportedChainId, string> } = {
@@ -392,6 +565,12 @@ export const TOKEN_SHORTHANDS: { [shorthand: string]: Record<SupportedChainId, s
     [SupportedChainId.ARBITRUM_ONE]: USDC_ARBITRUM_ONE.address,
     [SupportedChainId.BASE]: USDC_BASE.address,
     [SupportedChainId.SEPOLIA]: USDC_SEPOLIA.address,
+    [SupportedChainId.POLYGON]: USDC_POLYGON.address,
+    [SupportedChainId.AVALANCHE]: USDC_AVALANCHE.address,
+    [SupportedChainId.LENS]: USDC_LENS.address,
+    [SupportedChainId.BNB]: USDC_BNB.address,
+    [SupportedChainId.LINEA]: USDC_LINEA.address,
+    [SupportedChainId.PLASMA]: USDT_PLASMA.address,
   },
 }
 
@@ -425,82 +604,74 @@ const V_COW_TOKEN_SEPOLIA = new TokenWithLogo(
   'CoW Protocol Virtual Token',
 )
 
+/**
+ * VCOW token deployed during the airdrop in 2022.
+ * Not available for new chains after that date.
+ */
 export const V_COW: Record<SupportedChainId, TokenWithLogo | null> = {
+  ...mapSupportedNetworks(null),
   [SupportedChainId.MAINNET]: V_COW_TOKEN_MAINNET,
   [SupportedChainId.GNOSIS_CHAIN]: V_COW_TOKEN_XDAI,
-  [SupportedChainId.ARBITRUM_ONE]: null,
-  [SupportedChainId.BASE]: null,
   [SupportedChainId.SEPOLIA]: V_COW_TOKEN_SEPOLIA,
 }
 
 /**
  * Cow token
  */
-const COW_TOKEN_MAINNET = new TokenWithLogo(
-  undefined,
+const COW_TOKEN_SYMBOL = 'COW'
+const COW_TOKEN_NAME = 'CoW Protocol Token'
+const COW_TOKEN_DECIMALS = 18
+
+const DEFAULT_LOGO_URI = cowprotocolTokenLogoUrl(
+  COW_CONTRACT_ADDRESS[SupportedChainId.MAINNET]!.toLowerCase(),
   SupportedChainId.MAINNET,
-  COW_CONTRACT_ADDRESS[SupportedChainId.MAINNET],
-  18,
-  'COW',
-  'CoW Protocol Token',
 )
 
-const COW_TOKEN_XDAI = new TokenWithLogo(
-  COW_TOKEN_MAINNET.logoURI,
-  SupportedChainId.GNOSIS_CHAIN,
-  COW_CONTRACT_ADDRESS[SupportedChainId.GNOSIS_CHAIN],
-  18,
-  'COW',
-  'CoW Protocol Token',
-)
+function getCowTokenForChain(chain: SupportedChainId, logoURI: string = DEFAULT_LOGO_URI): TokenWithLogo | null {
+  const address = COW_CONTRACT_ADDRESS[chain]
 
-export const COW_TOKEN_ARBITRUM = new TokenWithLogo(
-  COW_TOKEN_MAINNET.logoURI,
-  SupportedChainId.ARBITRUM_ONE,
-  COW_CONTRACT_ADDRESS[SupportedChainId.ARBITRUM_ONE],
-  18,
-  'COW',
-  'CoW Protocol Token',
-)
+  if (!address) return null
 
-export const COW_TOKEN_BASE = new TokenWithLogo(
-  COW_TOKEN_MAINNET.logoURI,
-  SupportedChainId.BASE,
-  COW_CONTRACT_ADDRESS[SupportedChainId.BASE],
-  18,
-  'COW',
-  'CoW Protocol Token',
-)
+  return new TokenWithLogo(logoURI, chain, address, COW_TOKEN_DECIMALS, COW_TOKEN_SYMBOL, COW_TOKEN_NAME)
+}
 
-const COW_TOKEN_SEPOLIA = new TokenWithLogo(
-  COW_TOKEN_MAINNET.logoURI,
-  SupportedChainId.SEPOLIA,
-  COW_CONTRACT_ADDRESS[SupportedChainId.SEPOLIA],
-  18,
-  'COW',
-  'CoW Protocol Token',
-)
+export const COW_TOKEN_MAINNET = getCowTokenForChain(SupportedChainId.MAINNET)
+export const COW_TOKEN_XDAI = getCowTokenForChain(SupportedChainId.GNOSIS_CHAIN, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_ARBITRUM = getCowTokenForChain(SupportedChainId.ARBITRUM_ONE, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_BASE = getCowTokenForChain(SupportedChainId.BASE, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_SEPOLIA = getCowTokenForChain(SupportedChainId.SEPOLIA, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_POLYGON = getCowTokenForChain(SupportedChainId.POLYGON, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_AVALANCHE = getCowTokenForChain(SupportedChainId.AVALANCHE, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_LENS = getCowTokenForChain(SupportedChainId.LENS, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_BNB = getCowTokenForChain(SupportedChainId.BNB, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_LINEA = getCowTokenForChain(SupportedChainId.LINEA, COW_TOKEN_MAINNET?.logoURI)
+export const COW_TOKEN_PLASMA = getCowTokenForChain(SupportedChainId.PLASMA, COW_TOKEN_MAINNET?.logoURI)
 
-export const COW: Record<SupportedChainId, TokenWithLogo> = {
+export const COW: Record<SupportedChainId, TokenWithLogo | null> = {
   [SupportedChainId.MAINNET]: COW_TOKEN_MAINNET,
   [SupportedChainId.GNOSIS_CHAIN]: COW_TOKEN_XDAI,
   [SupportedChainId.ARBITRUM_ONE]: COW_TOKEN_ARBITRUM,
   [SupportedChainId.BASE]: COW_TOKEN_BASE,
   [SupportedChainId.SEPOLIA]: COW_TOKEN_SEPOLIA,
-}
+  [SupportedChainId.POLYGON]: COW_TOKEN_POLYGON,
+  [SupportedChainId.AVALANCHE]: COW_TOKEN_AVALANCHE,
+  [SupportedChainId.LENS]: COW_TOKEN_LENS,
+  [SupportedChainId.BNB]: COW_TOKEN_BNB,
+  [SupportedChainId.LINEA]: COW_TOKEN_LINEA,
+  [SupportedChainId.PLASMA]: COW_TOKEN_PLASMA,
+} as Record<SupportedChainId, TokenWithLogo | null>
 
 export const GNO: Record<SupportedChainId, TokenWithLogo | null> = {
+  ...mapSupportedNetworks(null),
   [SupportedChainId.MAINNET]: GNO_MAINNET,
   [SupportedChainId.GNOSIS_CHAIN]: GNO_GNOSIS_CHAIN,
   [SupportedChainId.ARBITRUM_ONE]: GNO_ARBITRUM_ONE,
-  [SupportedChainId.BASE]: null,
   [SupportedChainId.SEPOLIA]: GNO_SEPOLIA,
 }
 
 const SDAI_GNOSIS_CHAIN_ADDRESS = '0xaf204776c7245bf4147c2612bf6e5972ee483701'
 const GBPE_GNOSIS_CHAIN_ADDRESS = '0x5cb9073902f2035222b9749f8fb0c9bfe5527108'
 
-// Not used for fees
 const MAINNET_STABLECOINS = [
   USDC_MAINNET.address,
   USDT.address,
@@ -536,7 +707,6 @@ const ARBITRUM_ONE_STABLECOINS = [
   MIM_ARBITRUM_ONE.address,
 ].map((t) => t.toLowerCase())
 
-// Not used for fees
 const BASE_STABLECOINS = [
   USDC_BASE.address,
   DAI_BASE.address,
@@ -549,15 +719,40 @@ const BASE_STABLECOINS = [
   USDT_BASE.address,
 ].map((t) => t.toLowerCase())
 
-// Not used for fees
+const POLYGON_STABLECOINS = [USDC_POLYGON.address, USDT_POLYGON.address, DAI_POLYGON.address].map((t) =>
+  t.toLowerCase(),
+)
+
+const AVALANCHE_STABLECOINS = [USDC_AVALANCHE.address, USDT_AVALANCHE.address].map((t) => t.toLowerCase())
+
+const LENS_STABLECOINS = [
+  USDC_LENS.address,
+  NATIVE_CURRENCIES[SupportedChainId.LENS].address, // GHO
+  WRAPPED_NATIVE_CURRENCIES[SupportedChainId.LENS].address, // WGHO
+].map((t) => t.toLowerCase())
+
+const BNB_STABLECOINS = [USDC_BNB.address, USDT_BNB.address, DAI_BNB.address, BUSD_BNB.address].map((t) =>
+  t.toLowerCase(),
+)
+
+const LINEA_STABLECOINS = [USDC_LINEA.address].map((t) => t.toLowerCase())
+
+const PLASMA_STABLECOINS = [USDT_PLASMA.address].map((t) => t.toLowerCase())
+
 const SEPOLIA_STABLECOINS = [USDC_SEPOLIA.address, USDT_SEPOLIA.address].map((t) => t.toLowerCase())
 
-export const STABLECOINS: Record<ChainId, Set<string>> = {
+export const STABLECOINS: Record<SupportedChainId, Set<string>> = {
   [SupportedChainId.MAINNET]: new Set(MAINNET_STABLECOINS),
   [SupportedChainId.GNOSIS_CHAIN]: new Set(GNOSIS_CHAIN_STABLECOINS),
   [SupportedChainId.ARBITRUM_ONE]: new Set(ARBITRUM_ONE_STABLECOINS),
   [SupportedChainId.SEPOLIA]: new Set(SEPOLIA_STABLECOINS),
   [SupportedChainId.BASE]: new Set(BASE_STABLECOINS),
+  [SupportedChainId.POLYGON]: new Set(POLYGON_STABLECOINS),
+  [SupportedChainId.AVALANCHE]: new Set(AVALANCHE_STABLECOINS),
+  [SupportedChainId.LENS]: new Set(LENS_STABLECOINS),
+  [SupportedChainId.BNB]: new Set(BNB_STABLECOINS),
+  [SupportedChainId.LINEA]: new Set(LINEA_STABLECOINS),
+  [SupportedChainId.PLASMA]: new Set(PLASMA_STABLECOINS),
 }
 
 /**
@@ -565,73 +760,34 @@ export const STABLECOINS: Record<ChainId, Set<string>> = {
  * These are used in src/custom/pages/Account/LockedGnoVesting hooks and index files
  */
 export const MERKLE_DROP_CONTRACT_ADDRESSES: Record<SupportedChainId, string> = {
+  ...mapSupportedNetworks(''),
   [SupportedChainId.MAINNET]: '0x64646f112FfD6F1B7533359CFaAF7998F23C8c40',
   [SupportedChainId.GNOSIS_CHAIN]: '0x48D8566887F8c7d99757CE29c2cD39962bfd9547',
-  [SupportedChainId.ARBITRUM_ONE]: '', // doesn't exist
-  [SupportedChainId.BASE]: '', // doesn't exist
-  [SupportedChainId.SEPOLIA]: '', // TODO SEPOLIA: check it
 }
 
 export const TOKEN_DISTRO_CONTRACT_ADDRESSES: Record<SupportedChainId, string> = {
+  ...mapSupportedNetworks(''),
   [SupportedChainId.MAINNET]: '0x68FFAaC7A431f276fe73604C127Bd78E49070c92',
   [SupportedChainId.GNOSIS_CHAIN]: '0x3d610e917130f9D036e85A030596807f57e11093',
-  [SupportedChainId.ARBITRUM_ONE]: '', // doesn't exist
-  [SupportedChainId.BASE]: '', // doesn't exist
-  [SupportedChainId.SEPOLIA]: '', // TODO SEPOLIA: check it
 }
 
 /**
  * Cham token
  */
-const CHAM_TOKEN_MAINNET = new TokenWithLogo(
-  undefined, // TODO: Update with CHAM logo URI
-  SupportedChainId.MAINNET,
-  CHAM_CONTRACT_ADDRESS[SupportedChainId.MAINNET],
-  18,
-  'CHAM',
-  'Cham Token',
-)
+const CHAM_TOKEN_SYMBOL = 'CHAM'
+const CHAM_TOKEN_NAME = 'Cham Token'
+const CHAM_TOKEN_DECIMALS = 18
+const CHAM_LOGO_URI = undefined // TODO: Update with CHAM logo URI
 
-const CHAM_TOKEN_XDAI = new TokenWithLogo(
-  CHAM_TOKEN_MAINNET.logoURI,
-  SupportedChainId.GNOSIS_CHAIN,
-  CHAM_CONTRACT_ADDRESS[SupportedChainId.GNOSIS_CHAIN],
-  18,
-  'CHAM',
-  'Cham Token',
-)
-
-export const CHAM_TOKEN_ARBITRUM = new TokenWithLogo(
-  CHAM_TOKEN_MAINNET.logoURI,
-  SupportedChainId.ARBITRUM_ONE,
-  CHAM_CONTRACT_ADDRESS[SupportedChainId.ARBITRUM_ONE],
-  18,
-  'CHAM',
-  'Cham Token',
-)
-
-export const CHAM_TOKEN_BASE = new TokenWithLogo(
-  CHAM_TOKEN_MAINNET.logoURI,
-  SupportedChainId.BASE,
-  CHAM_CONTRACT_ADDRESS[SupportedChainId.BASE],
-  18,
-  'CHAM',
-  'Cham Token',
-)
-
-const CHAM_TOKEN_SEPOLIA = new TokenWithLogo(
-  CHAM_TOKEN_MAINNET.logoURI,
-  SupportedChainId.SEPOLIA,
-  CHAM_CONTRACT_ADDRESS[SupportedChainId.SEPOLIA],
-  18,
-  'CHAM',
-  'Cham Token',
-)
-
-export const CHAM: Record<SupportedChainId, TokenWithLogo> = {
-  [SupportedChainId.MAINNET]: CHAM_TOKEN_MAINNET,
-  [SupportedChainId.GNOSIS_CHAIN]: CHAM_TOKEN_XDAI,
-  [SupportedChainId.ARBITRUM_ONE]: CHAM_TOKEN_ARBITRUM,
-  [SupportedChainId.BASE]: CHAM_TOKEN_BASE,
-  [SupportedChainId.SEPOLIA]: CHAM_TOKEN_SEPOLIA,
+function getChamTokenForChain(chain: SupportedChainId): TokenWithLogo {
+  const address = CHAM_CONTRACT_ADDRESS[chain]
+  return new TokenWithLogo(CHAM_LOGO_URI, chain, address, CHAM_TOKEN_DECIMALS, CHAM_TOKEN_SYMBOL, CHAM_TOKEN_NAME)
 }
+
+export const CHAM_TOKEN_MAINNET = getChamTokenForChain(SupportedChainId.MAINNET)
+export const CHAM_TOKEN_XDAI = getChamTokenForChain(SupportedChainId.GNOSIS_CHAIN)
+export const CHAM_TOKEN_ARBITRUM = getChamTokenForChain(SupportedChainId.ARBITRUM_ONE)
+export const CHAM_TOKEN_BASE = getChamTokenForChain(SupportedChainId.BASE)
+export const CHAM_TOKEN_SEPOLIA = getChamTokenForChain(SupportedChainId.SEPOLIA)
+
+export const CHAM: Record<SupportedChainId, TokenWithLogo> = mapSupportedNetworks(getChamTokenForChain)
