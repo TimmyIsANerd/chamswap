@@ -87,7 +87,9 @@ export function App() {
       {
         label: 'Trade',
         children: menuItems.map((item) => {
-          const href = parameterizeTradeRoute(tradeContext, item.route, true)
+          const href = item.route.startsWith('http')
+            ? item.route
+            : parameterizeTradeRoute(tradeContext, item.route, true)
 
           return {
             href,
