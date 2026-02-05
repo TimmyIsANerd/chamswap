@@ -150,13 +150,24 @@ const MenuItem = ({
   isDropdownVisible: boolean
 }) => (
   <styledEl.MenuItem isActive={isActive} onClick={onClick} isDropdownVisible={isDropdownVisible}>
-    <styledEl.Link to={routePath}>
-      <Trans>{item.label}</Trans>
-      {(!isActive && item.badgeImage) || item.badge ? (
-        <Badge {...(item.badgeType && { type: item.badgeType })}>
-          {item.badgeImage ? <SVG src={item.badgeImage} /> : <Trans>{item.badge}</Trans>}
-        </Badge>
-      ) : null}
-    </styledEl.Link>
+    {routePath.startsWith('http') ? (
+      <styledEl.ExternalLink href={routePath} target="_blank" rel="noopener noreferrer">
+        <Trans>{item.label}</Trans>
+        {(!isActive && item.badgeImage) || item.badge ? (
+          <Badge {...(item.badgeType && { type: item.badgeType })}>
+            {item.badgeImage ? <SVG src={item.badgeImage} /> : <Trans>{item.badge}</Trans>}
+          </Badge>
+        ) : null}
+      </styledEl.ExternalLink>
+    ) : (
+      <styledEl.Link to={routePath}>
+        <Trans>{item.label}</Trans>
+        {(!isActive && item.badgeImage) || item.badge ? (
+          <Badge {...(item.badgeType && { type: item.badgeType })}>
+            {item.badgeImage ? <SVG src={item.badgeImage} /> : <Trans>{item.badge}</Trans>}
+          </Badge>
+        ) : null}
+      </styledEl.Link>
+    )}
   </styledEl.MenuItem>
 )

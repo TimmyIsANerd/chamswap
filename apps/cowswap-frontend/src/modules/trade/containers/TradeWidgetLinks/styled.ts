@@ -3,7 +3,7 @@ import { Badge, UI } from '@cowprotocol/ui'
 import { NavLink } from 'react-router-dom'
 import styled, { css } from 'styled-components/macro'
 
-export const Link = styled(NavLink)`
+const LinkStyles = css`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -40,6 +40,14 @@ export const Link = styled(NavLink)`
   svg > path {
     fill: currentColor;
   }
+`
+
+export const Link = styled(NavLink)`
+  ${LinkStyles}
+`
+
+export const ExternalLink = styled.a`
+  ${LinkStyles}
 `
 
 export const Wrapper = styled.div`
@@ -82,11 +90,11 @@ export const MenuItem = styled.div<{ isActive?: boolean; isDropdownVisible: bool
       css`
         background: var(${UI.COLOR_PAPER_DARKER});
 
-        ${Link} {
+        ${Link}, ${ExternalLink} {
           color: inherit;
         }
 
-        ${Link} > ${Badge} {
+        ${Link} > ${Badge}, ${ExternalLink} > ${Badge} {
           display: none;
         }
       `}
