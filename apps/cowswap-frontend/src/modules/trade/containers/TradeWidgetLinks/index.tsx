@@ -69,8 +69,9 @@ export function TradeWidgetLinks({ isDropdown = false }: TradeWidgetLinksProps) 
       const isCurrentPathYield = location.pathname.startsWith(addChainIdToRoute(Routes.YIELD, chainId))
       const itemTradeState = getTradeStateByType(item.route)
 
-      const routePath =
-        isItemYield && !isCurrentPathYield
+      const routePath = item.route.startsWith('http')
+        ? item.route
+        : isItemYield && !isCurrentPathYield
           ? addChainIdToRoute(item.route, chainId)
           : parameterizeTradeRoute(
               isCurrentPathYield

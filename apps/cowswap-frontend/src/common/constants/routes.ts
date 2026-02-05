@@ -64,7 +64,7 @@ export const MENU_ITEMS: IMenuItem[] = [
   { route: Routes.SWAP, label: 'Swap', description: 'Trade tokens' },
   { route: Routes.LIMIT_ORDER, label: 'Limit', fullLabel: 'Limit order', description: 'Set your own price' },
   { route: Routes.ADVANCED_ORDERS, label: 'TWAP', description: 'Place orders with a time-weighted average price' },
-  { route: Routes.DEFI, label: 'Defi', description: 'Explore Defi' },
+  { route: Routes.DEFI, label: 'Defi', description: 'Perp Dex, Predictions, Staking & Lending' },
   // { route: Routes.BUY, label: 'Buy', description: 'Buy tokens with card' },
 ]
 
